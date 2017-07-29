@@ -28,7 +28,7 @@ func (r *Recipe) EstimatedPreBoilVolume() float64 {
 // OriginalGravity calculates the original gravity
 func (r *Recipe) OriginalGravity() float64 {
 	og := 0.0
-	if r.Efficiency == 0 || r.Batch == 0 {
+	if r.Efficiency == 0 || r.Batch == 0 || len(r.Fermentables) == 0 {
 		return og
 	}
 	for i := range r.Fermentables {
@@ -41,4 +41,16 @@ func (r *Recipe) OriginalGravity() float64 {
 // BoilSpecificGravity calculates the specific gravity post boil
 func (r *Recipe) BoilSpecificGravity() float64 {
 	return r.EstimatedPreBoilVolume()/r.Batch*(r.OriginalGravity()-1) + 1
+}
+
+// Color for recipe in SRM
+func (r *Recipe) Color() float64 {
+	color := 0.0
+	if len(r.Fermentables) == 0 {
+		return color
+	}
+	for i := range r.Fermentables {
+		color = color + r.Fermentables[i].ColorMCU()
+	}
+	return ((color / r.Batch) * 0.2) + 8.4
 }

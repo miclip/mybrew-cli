@@ -63,6 +63,7 @@ yeasts:
 		)
 		BeforeEach(func() {
 			recipe = Recipe{
+				Name:       "Accidental IPA",
 				Batch:      11,
 				Efficiency: 83,
 				Fermentables: []Fermentable{
@@ -82,7 +83,7 @@ yeasts:
 					},
 					Fermentable{
 						Name:      "White Wheat",
-						Amount:    1,
+						Amount:    1.0,
 						Potential: 1.04,
 						Yield:     86.7,
 						Lovibond:  2,
@@ -100,8 +101,19 @@ yeasts:
 			recipe.Efficiency = 0
 			Ω(Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(0.0))
 		})
+		It("Calculates 0.0 OriginalGravity when no Batch size", func() {
+			recipe.Batch = 0
+			Ω(Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(0.0))
+		})
 		It("Calculates EstimatedPreBoilVolume", func() {
 			Ω(Round(recipe.EstimatedPreBoilVolume(), .5, 1)).Should(Equal(13.2))
+		})
+		It("Calculates Color SRM", func() {
+			Ω(Round(recipe.Color(), .5, 1)).Should(Equal(9.4))
+		})
+		It("Calculates Color SRM of 0 when no fermentables", func() {
+			recipe.Fermentables = []Fermentable{}
+			Ω(Round(recipe.Color(), .5, 1)).Should(Equal(0.0))
 		})
 	})
 

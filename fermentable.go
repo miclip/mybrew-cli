@@ -19,3 +19,8 @@ func (f *Fermentable) Points() float64 {
 func (f *Fermentable) PointsByAmount() float64 {
 	return f.Amount * f.Points()
 }
+
+// ColorMCU calculates color in SRM
+func (f *Fermentable) ColorMCU() float64 {
+	return f.Amount * f.Lovibond
+}
