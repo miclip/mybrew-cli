@@ -148,6 +148,12 @@ yeasts:
 						Lovibond:  2,
 					},
 				},
+				Yeasts: []Yeast{
+					Yeast{
+						Name:        "Safale American",
+						Attenuation: 77,
+					},
+				},
 			}
 		})
 		It("Calculates BoilSpecificGravity", func() {
@@ -155,6 +161,9 @@ yeasts:
 		})
 		It("Calculates OriginalGravity", func() {
 			Ω(Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(1.07))
+		})
+		It("Calculates OriginalGravityPoints", func() {
+			Ω(Round(recipe.OriginalGravityPoints(), .5, 3)).Should(Equal(70.47))
 		})
 		It("Calculates 0.0 OriginalGravity when no efficiency provided", func() {
 			recipe.Efficiency = 0
@@ -166,6 +175,15 @@ yeasts:
 		})
 		It("Calculates EstimatedPreBoilVolume", func() {
 			Ω(Round(recipe.EstimatedPreBoilVolume(), .5, 1)).Should(Equal(13.2))
+		})
+		It("Calculates EstimatedFinalGravity", func() {
+			Ω(Round(recipe.EstimatedFinalGravity(), .5, 3)).Should(Equal(1.016))
+		})
+		It("Calculates AlcoholByVolume", func() {
+			Ω(Round(recipe.AlcoholByVolume(), .5, 2)).Should(Equal(7.10))
+		})
+		It("Calculates AlcoholByWeight", func() {
+			Ω(Round(recipe.AlcoholByWeight(), .5, 2)).Should(Equal(5.52))
 		})
 		It("Calculates InternationalBitteringUnits", func() {
 			Ω(Round(recipe.InternationalBitteringUnits(), .5, 1)).Should(Equal(31.1))
