@@ -45,25 +45,34 @@ func NewHopUtilizations() *HopUtilizations {
 	}
 }
 
-// FindByAdditionTime ...
-func (h *HopUtilizations) FindByAdditionTime(additionTime int, gravity float64, hopForm string) (*HopUtilization, error) {
-	hopUtils := h.Matrix[hopForm]
-	if len(hopUtils) == 0 {
+// FindHopUtilization finds the hop utilization for a specific addition time, gravity and hop type
+func (h *HopUtilizations) FindHopUtilization(additionTime int, gravity float64, hopForm string) (*HopUtilization, error) {
+	hopUtils, ok := h.Matrix[hopForm]
+	if !ok {
 		return nil, fmt.Errorf("No Hop Utilizations found for Hop Form %s", hopForm)
 	}
 	var l, u *HopUtilization
+	lmin, umin := h.findLowerMinutes(additionTime), h.findUpperMinutes(additionTime)
+	gravityR := Round(gravity, .5, 2)
 	for i := range hopUtils {
-		if hopUtils[i].Minutes == h.findHopLowerMinutes(additionTime) && Round(hopUtils[i].Gravity, .5, 2) == Round(gravity, .5, 2) {
-			l = &hopUtils[i]
+		hoputil := &hopUtils[i]
+		if Round(hoputil.Gravity, .5, 2) != gravityR {
+			continue
 		}
-		if hopUtils[i].Minutes == h.findHopUpperMinutes(additionTime) && Round(hopUtils[i].Gravity, .5, 2) == Round(gravity, .5, 2) {
-			u = &hopUtils[i]
+		if hoputil.Minutes == lmin {
+			l = hoputil
+		}
+		if hoputil.Minutes == umin {
+			u = hoputil
 		}
 	}
 	if l != nil && u != nil {
 		if additionTime > 90 {
-			u.Minutes = additionTime
-			return u, nil
+			return &HopUtilization{
+				Minutes:    additionTime,
+				Gravity:    gravity,
+				Percentage: u.Percentage,
+			}, nil
 		}
 		up, lp, um, lm := float64(u.Percentage), float64(l.Percentage), float64(u.Minutes), float64(l.Minutes)
 		return &HopUtilization{
@@ -72,24 +81,30 @@ func (h *HopUtilizations) FindByAdditionTime(additionTime int, gravity float64, 
 			Percentage: int((float64(additionTime)-lm)*((up-lp)/(um-lm)) + lp),
 		}, nil
 	}
-	return nil, fmt.Errorf("No HopUtilization was found for AdditionTime: %v Gravity: %v", additionTime, gravity)
+	if u == nil && l == nil {
+		return nil, fmt.Errorf("No HopUtilization was found for AdditionTime: %v Gravity: %v", additionTime, Round(gravity, .5, 3))
+	}
+	if u == nil {
+		return nil, fmt.Errorf("No Upper (%v) HopUtilization was found for AdditionTime: %v Gravity: %v", umin, additionTime, Round(gravity, .5, 3))
+	}
+	return nil, fmt.Errorf("No Lower (%v) HopUtilization was found for AdditionTime: %v Gravity: %v", lmin, additionTime, Round(gravity, .5, 3))
 }
 
-func (h *HopUtilizations) findHopUpperMinutes(hopTime int) int {
+func (h *HopUtilizations) findUpperMinutes(hopTime int) int {
 	mins := []int{5, 15, 30, 45, 60, 90}
-	for i := range mins {
-		if mins[i] > hopTime {
-			return mins[i]
+	for _, v := range mins {
+		if v > hopTime {
+			return v
 		}
 	}
 	return 90
 }
 
-func (h *HopUtilizations) findHopLowerMinutes(hopTime int) int {
+func (h *HopUtilizations) findLowerMinutes(hopTime int) int {
 	mins := []int{90, 60, 45, 30, 15, 5}
-	for i := range mins {
-		if mins[i] <= hopTime {
-			return mins[i]
+	for _, v := range mins {
+		if v <= hopTime {
+			return v
 		}
 	}
 	return 0

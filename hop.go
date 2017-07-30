@@ -19,9 +19,9 @@ func (h *Hop) InternationalBitteringUnits(hopUtils *HopUtilizations, batch float
 	if h.Method != "Boil" {
 		return 0.0
 	}
-	hopUtil, err := hopUtils.FindByAdditionTime(h.AdditionTime, gravity, h.Form)
+	hopUtil, err := hopUtils.FindHopUtilization(h.AdditionTime, gravity, h.Form)
 	if err != nil {
-		log.Printf("IBU's for %s could not be calculated due to error %v", h.Name, err)
+		log.Printf("IBU's for the %s addition could not be calculated due to error: %v", h.Name, err)
 		return 0.0
 	}
 	return (((float64(hopUtil.Percentage) / 100) * (h.Alpha / 100) * h.Amount) * hopUtilOunceFactor) / batch

@@ -102,6 +102,5 @@ func (r *Recipe) AlcoholByWeight() float64 {
 	if r.EstimatedFinalGravity() == 0 {
 		return 0.0
 	}
-	return (0.79 * r.AlcoholByVolume()) /
-		r.EstimatedFinalGravity()
+	return (0.79 * r.AlcoholByVolume()) / r.EstimatedFinalGravity()
 }
