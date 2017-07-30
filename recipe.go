@@ -54,3 +54,13 @@ func (r *Recipe) Color() float64 {
 	}
 	return ((color / r.Batch) * 0.2) + 8.4
 }
+
+// InternationalBitteringUnits ...
+func (r *Recipe) InternationalBitteringUnits() float64 {
+	hopUtils := NewHopUtilizations()
+	ibu := 0.0
+	for i := range r.Hops {
+		ibu = ibu + r.Hops[i].InternationalBitteringUnits(hopUtils, r.Batch, r.OriginalGravity())
+	}
+	return ibu
+}

@@ -24,6 +24,8 @@ hops:
 - name: Cascade
   amount: 1
   alpha: 6.7
+  form: Pellet
+  method: boil
 fermentables:
 - name: 2 Row
   amount: 5
@@ -66,6 +68,63 @@ yeasts:
 				Name:       "Accidental IPA",
 				Batch:      11,
 				Efficiency: 83,
+				BoilTime:   90,
+				Hops: []Hop{
+					Hop{
+						Name:         "Galaxy",
+						Amount:       1.25,
+						Alpha:        13,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 60,
+					},
+					Hop{
+						Name:         "Centennial",
+						Amount:       1.0,
+						Alpha:        9.9,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 10,
+					},
+					Hop{
+						Name:         "Cascade",
+						Amount:       1.0,
+						Alpha:        6.7,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 10,
+					},
+					Hop{
+						Name:         "Centennial",
+						Amount:       1.0,
+						Alpha:        9.9,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 0,
+					},
+					Hop{
+						Name:         "Cascade",
+						Amount:       1.0,
+						Alpha:        6.7,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 0,
+					},
+					Hop{
+						Name:   "Citra",
+						Amount: 1.0,
+						Alpha:  12.0,
+						Form:   "Pellet",
+						Method: "Dry Hop",
+					},
+					Hop{
+						Name:   "Galaxy",
+						Amount: 1.0,
+						Alpha:  13.0,
+						Form:   "Pellet",
+						Method: "Dry Hop",
+					},
+				},
 				Fermentables: []Fermentable{
 					Fermentable{
 						Name:      "2 Row",
@@ -107,6 +166,9 @@ yeasts:
 		})
 		It("Calculates EstimatedPreBoilVolume", func() {
 			Ω(Round(recipe.EstimatedPreBoilVolume(), .5, 1)).Should(Equal(13.2))
+		})
+		It("Calculates InternationalBitteringUnits", func() {
+			Ω(Round(recipe.InternationalBitteringUnits(), .5, 1)).Should(Equal(31.1))
 		})
 		It("Calculates Color SRM", func() {
 			Ω(Round(recipe.Color(), .5, 1)).Should(Equal(9.4))

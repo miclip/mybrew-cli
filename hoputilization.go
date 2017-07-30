@@ -4,6 +4,7 @@ import "fmt"
 
 var (
 	defaultPelletHopUtilizations = []HopUtilization{
+		HopUtilization{0, 1.03, 0}, HopUtilization{0, 1.04, 0}, HopUtilization{0, 1.05, 0}, HopUtilization{0, 1.06, 0}, HopUtilization{0, 1.07, 0}, HopUtilization{0, 1.08, 0}, HopUtilization{0, 1.09, 0},
 		HopUtilization{5, 1.03, 5}, HopUtilization{5, 1.04, 5}, HopUtilization{5, 1.05, 4}, HopUtilization{5, 1.06, 4}, HopUtilization{5, 1.07, 3}, HopUtilization{5, 1.08, 3}, HopUtilization{5, 1.09, 3},
 		HopUtilization{15, 1.03, 12}, HopUtilization{15, 1.04, 12}, HopUtilization{15, 1.05, 11}, HopUtilization{15, 1.06, 11}, HopUtilization{15, 1.07, 11}, HopUtilization{15, 1.08, 10}, HopUtilization{15, 1.09, 9},
 		HopUtilization{30, 1.03, 17}, HopUtilization{30, 1.04, 17}, HopUtilization{30, 1.05, 16}, HopUtilization{30, 1.06, 16}, HopUtilization{30, 1.07, 15}, HopUtilization{30, 1.08, 15}, HopUtilization{30, 1.09, 13},
@@ -12,6 +13,7 @@ var (
 		HopUtilization{90, 1.03, 28}, HopUtilization{90, 1.04, 27}, HopUtilization{90, 1.05, 26}, HopUtilization{90, 1.06, 26}, HopUtilization{90, 1.07, 25}, HopUtilization{90, 1.08, 23}, HopUtilization{90, 1.09, 21},
 	}
 	defaultWholeHopUtilizations = []HopUtilization{
+		HopUtilization{0, 1.03, 0}, HopUtilization{0, 1.04, 0}, HopUtilization{0, 1.05, 0}, HopUtilization{0, 1.06, 0}, HopUtilization{0, 1.07, 0}, HopUtilization{0, 1.08, 0}, HopUtilization{0, 1.09, 0},
 		HopUtilization{5, 1.03, 6}, HopUtilization{5, 1.04, 6}, HopUtilization{5, 1.05, 5}, HopUtilization{5, 1.06, 5}, HopUtilization{5, 1.07, 4}, HopUtilization{5, 1.08, 4}, HopUtilization{5, 1.09, 3},
 		HopUtilization{15, 1.03, 15}, HopUtilization{15, 1.04, 15}, HopUtilization{15, 1.05, 14}, HopUtilization{15, 1.06, 14}, HopUtilization{15, 1.07, 13}, HopUtilization{15, 1.08, 13}, HopUtilization{15, 1.09, 11},
 		HopUtilization{30, 1.03, 22}, HopUtilization{30, 1.04, 21}, HopUtilization{30, 1.05, 21}, HopUtilization{30, 1.06, 20}, HopUtilization{30, 1.07, 19}, HopUtilization{30, 1.08, 18}, HopUtilization{30, 1.09, 16},
@@ -34,18 +36,21 @@ type HopUtilization struct {
 }
 
 // NewHopUtilizations creates a new HopUtilization matrix
-func NewHopUtilizations() HopUtilizations {
+func NewHopUtilizations() *HopUtilizations {
 	h := make(map[string][]HopUtilization)
 	h["Pellet"] = defaultPelletHopUtilizations
 	h["Whole"] = defaultWholeHopUtilizations
-	return HopUtilizations{
+	return &HopUtilizations{
 		Matrix: h,
 	}
 }
 
 // FindByAdditionTime ...
-func (h *HopUtilizations) FindByAdditionTime(additionTime int, gravity float64, hopType string) (lower *HopUtilization, upper *HopUtilization, err error) {
-	hopUtils := h.Matrix[hopType]
+func (h *HopUtilizations) FindByAdditionTime(additionTime int, gravity float64, hopForm string) (*HopUtilization, error) {
+	hopUtils := h.Matrix[hopForm]
+	if len(hopUtils) == 0 {
+		return nil, fmt.Errorf("No Hop Utilizations found for Hop Form %s", hopForm)
+	}
 	var l, u *HopUtilization
 	for i := range hopUtils {
 		if hopUtils[i].Minutes == h.findHopLowerMinutes(additionTime) && Round(hopUtils[i].Gravity, .5, 2) == Round(gravity, .5, 2) {
@@ -56,10 +61,18 @@ func (h *HopUtilizations) FindByAdditionTime(additionTime int, gravity float64, 
 		}
 	}
 	if l != nil && u != nil {
-		return l, u, nil
+		if additionTime > 90 {
+			u.Minutes = additionTime
+			return u, nil
+		}
+		up, lp, um, lm := float64(u.Percentage), float64(l.Percentage), float64(u.Minutes), float64(l.Minutes)
+		return &HopUtilization{
+			Minutes:    additionTime,
+			Gravity:    gravity,
+			Percentage: int((float64(additionTime)-lm)*((up-lp)/(um-lm)) + lp),
+		}, nil
 	}
-
-	return nil, nil, fmt.Errorf("No HopUtilization was found for AdditionTime: %v Gravity: %v", additionTime, gravity)
+	return nil, fmt.Errorf("No HopUtilization was found for AdditionTime: %v Gravity: %v", additionTime, gravity)
 }
 
 func (h *HopUtilizations) findHopUpperMinutes(hopTime int) int {
@@ -79,5 +92,5 @@ func (h *HopUtilizations) findHopLowerMinutes(hopTime int) int {
 			return mins[i]
 		}
 	}
-	return 5
+	return 0
 }
