@@ -16,7 +16,6 @@ var _ = Describe("Recipe", func() {
 recipe:
 name: Test Recipe
 batchsize: 5
-batchunitofmeasure: gl
 efficiency: 70
 method: All Grain
 boiltime: 60

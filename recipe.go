@@ -9,16 +9,15 @@ const (
 
 // Recipe ...
 type Recipe struct {
-	Name               string
-	Batch              float64
-	BatchUnitOfMeasure string
-	Style              string
-	Efficiency         float64
-	Method             string
-	BoilTime           float64
-	Hops               []Hop
-	Fermentables       []Fermentable
-	Yeasts             []Yeast
+	Name         string
+	Batch        float64
+	Style        string
+	Efficiency   float64
+	Method       string
+	BoilTime     float64
+	Hops         []Hop
+	Fermentables []Fermentable
+	Yeasts       []Yeast
 }
 
 // EstimatedPreBoilVolume estimates the preboil volume
