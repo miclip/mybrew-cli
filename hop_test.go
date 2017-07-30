@@ -19,6 +19,6 @@ var _ = Describe("Hop", func() {
 		}
 		hopUtils := NewHopUtilizations()
 		ibu := h.InternationalBitteringUnits(hopUtils, 11, 1.07)
-		Ω(Round(ibu, .5, 1)).Should(Equal(23.2))
+		Ω(Round(ibu, .5, 1)).Should(Equal(28.8))
 	})
 })

@@ -185,7 +185,7 @@ yeasts:
 			Ω(Round(recipe.AlcoholByWeight(), .5, 2)).Should(Equal(5.52))
 		})
 		It("Calculates InternationalBitteringUnits", func() {
-			Ω(Round(recipe.InternationalBitteringUnits(), .5, 1)).Should(Equal(31.1))
+			Ω(Round(recipe.InternationalBitteringUnits(), .5, 1)).Should(Equal(37.8))
 		})
 		It("Calculates Color SRM", func() {
 			Ω(Round(recipe.Color(), .5, 1)).Should(Equal(9.4))

@@ -21,7 +21,7 @@ var _ = Describe("Hoputilization", func() {
 		Ω(u).ShouldNot(BeNil())
 		Ω(u.Minutes).Should(Equal(41))
 		Ω(u.Gravity).Should(Equal(1.07))
-		Ω(u.Percentage).Should(Equal(17))
+		Ω(u.Percentage).Should(Equal(21))
 	})
 	It("Finds Hop Utilizations 91 min addition for 1.07 OG", func() {
 		h := NewHopUtilizations()
@@ -30,7 +30,7 @@ var _ = Describe("Hoputilization", func() {
 		Ω(u).ShouldNot(BeNil())
 		Ω(u.Minutes).Should(Equal(91))
 		Ω(u.Gravity).Should(Equal(1.07))
-		Ω(u.Percentage).Should(Equal(25))
+		Ω(u.Percentage).Should(Equal(31))
 	})
 	It("Finds Hop Utilizations 1 min addition for 1.07 OG", func() {
 		h := NewHopUtilizations()
