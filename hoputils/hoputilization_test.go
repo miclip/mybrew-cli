@@ -1,4 +1,4 @@
-package mybrewgo
+package hoputils
 
 import (
 	. "github.com/onsi/ginkgo"

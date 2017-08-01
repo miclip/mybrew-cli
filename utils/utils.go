@@ -1,4 +1,4 @@
-package mybrewgo
+package utils
 
 import "math"
 

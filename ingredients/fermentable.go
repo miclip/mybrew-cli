@@ -1,4 +1,4 @@
-package mybrewgo
+package ingredients
 
 // Fermentable ...
 type Fermentable struct {
@@ -9,6 +9,13 @@ type Fermentable struct {
 	Lovibond  float64
 	Type      string
 }
+
+const (
+	yieldToPoints           = 0.46
+	gravityBase             = 0.00001
+	preBoilGallonsFactorEst = 1.2
+	hopUtilOunceFactor      = 7490
+)
 
 // Points calculates potenital yield in points
 func (f *Fermentable) Points() float64 {

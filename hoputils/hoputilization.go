@@ -1,6 +1,10 @@
-package mybrewgo
+package hoputils
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/miclip/mybrewgo/utils"
+)
 
 var (
 	defaultPelletHopUtilizations = []HopUtilization{
@@ -53,10 +57,10 @@ func (h *HopUtilizations) FindHopUtilization(additionTime int, gravity float64, 
 	}
 	var l, u *HopUtilization
 	lmin, umin := h.findLowerMinutes(additionTime), h.findUpperMinutes(additionTime)
-	gravityR := Round(gravity, .5, 2)
+	gravityR := utils.Round(gravity, .5, 2)
 	for i := range hopUtils {
 		hoputil := &hopUtils[i]
-		if Round(hoputil.Gravity, .5, 2) != gravityR {
+		if utils.Round(hoputil.Gravity, .5, 2) != gravityR {
 			continue
 		}
 		if hoputil.Minutes == lmin {
@@ -82,12 +86,12 @@ func (h *HopUtilizations) FindHopUtilization(additionTime int, gravity float64, 
 		}, nil
 	}
 	if u == nil && l == nil {
-		return nil, fmt.Errorf("No HopUtilization was found for AdditionTime: %v Gravity: %v", additionTime, Round(gravity, .5, 3))
+		return nil, fmt.Errorf("No HopUtilization was found for AdditionTime: %v Gravity: %v", additionTime, utils.Round(gravity, .5, 3))
 	}
 	if u == nil {
-		return nil, fmt.Errorf("No Upper (%v) HopUtilization was found for AdditionTime: %v Gravity: %v", umin, additionTime, Round(gravity, .5, 3))
+		return nil, fmt.Errorf("No Upper (%v) HopUtilization was found for AdditionTime: %v Gravity: %v", umin, additionTime, utils.Round(gravity, .5, 3))
 	}
-	return nil, fmt.Errorf("No Lower (%v) HopUtilization was found for AdditionTime: %v Gravity: %v", lmin, additionTime, Round(gravity, .5, 3))
+	return nil, fmt.Errorf("No Lower (%v) HopUtilization was found for AdditionTime: %v Gravity: %v", lmin, additionTime, utils.Round(gravity, .5, 3))
 }
 
 func (h *HopUtilizations) findUpperMinutes(hopTime int) int {

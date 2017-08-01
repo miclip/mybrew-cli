@@ -1,3 +1,3 @@
 # MyBrewGo
 
-Command Line Interface to manage homebrew recipes and calculations 
+Command Line Interface to manage Homebrew beer recipes and calculations

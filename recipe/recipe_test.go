@@ -1,8 +1,9 @@
-package mybrewgo_test
+package recipe_test
 
 import (
-	. "github.com/miclip/mybrewgo"
-	yaml "gopkg.in/yaml.v2"
+	"github.com/miclip/mybrewgo/ingredients"
+	. "github.com/miclip/mybrewgo/recipe"
+	"github.com/miclip/mybrewgo/utils"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -42,8 +43,8 @@ yeasts:
 - name: California Ale
   attenutation: 85`
 
-			var recipe Recipe
-			err := yaml.Unmarshal([]byte(recipeData), &recipe)
+			var recipe *Recipe
+			recipe, err := ParseRecipe(recipeData)
 			Ω(err).Should(Succeed())
 			Ω(recipe).ShouldNot(BeNil())
 			Ω(recipe.Name).Should(Equal("Test Recipe"))
@@ -68,8 +69,8 @@ yeasts:
 				Batch:      11,
 				Efficiency: 83,
 				BoilTime:   90,
-				Hops: []Hop{
-					Hop{
+				Hops: []ingredients.Hop{
+					ingredients.Hop{
 						Name:         "Galaxy",
 						Amount:       1.25,
 						Alpha:        13,
@@ -77,7 +78,7 @@ yeasts:
 						Method:       "Boil",
 						AdditionTime: 60,
 					},
-					Hop{
+					ingredients.Hop{
 						Name:         "Centennial",
 						Amount:       1.0,
 						Alpha:        9.9,
@@ -85,7 +86,7 @@ yeasts:
 						Method:       "Boil",
 						AdditionTime: 10,
 					},
-					Hop{
+					ingredients.Hop{
 						Name:         "Cascade",
 						Amount:       1.0,
 						Alpha:        6.7,
@@ -93,7 +94,7 @@ yeasts:
 						Method:       "Boil",
 						AdditionTime: 10,
 					},
-					Hop{
+					ingredients.Hop{
 						Name:         "Centennial",
 						Amount:       1.0,
 						Alpha:        9.9,
@@ -101,7 +102,7 @@ yeasts:
 						Method:       "Boil",
 						AdditionTime: 0,
 					},
-					Hop{
+					ingredients.Hop{
 						Name:         "Cascade",
 						Amount:       1.0,
 						Alpha:        6.7,
@@ -109,14 +110,14 @@ yeasts:
 						Method:       "Boil",
 						AdditionTime: 0,
 					},
-					Hop{
+					ingredients.Hop{
 						Name:   "Citra",
 						Amount: 1.0,
 						Alpha:  12.0,
 						Form:   "Pellet",
 						Method: "Dry Hop",
 					},
-					Hop{
+					ingredients.Hop{
 						Name:   "Galaxy",
 						Amount: 1.0,
 						Alpha:  13.0,
@@ -124,22 +125,22 @@ yeasts:
 						Method: "Dry Hop",
 					},
 				},
-				Fermentables: []Fermentable{
-					Fermentable{
+				Fermentables: []ingredients.Fermentable{
+					ingredients.Fermentable{
 						Name:      "2 Row",
 						Amount:    23.35,
 						Potential: 1.036,
 						Yield:     77.9,
 						Lovibond:  2,
 					},
-					Fermentable{
+					ingredients.Fermentable{
 						Name:      "Vienna Malt",
 						Amount:    1.6,
 						Potential: 1.036,
 						Yield:     77.9,
 						Lovibond:  4,
 					},
-					Fermentable{
+					ingredients.Fermentable{
 						Name:      "White Wheat",
 						Amount:    1.0,
 						Potential: 1.04,
@@ -147,8 +148,8 @@ yeasts:
 						Lovibond:  2,
 					},
 				},
-				Yeasts: []Yeast{
-					Yeast{
+				Yeasts: []ingredients.Yeast{
+					ingredients.Yeast{
 						Name:        "Safale American",
 						Attenuation: 77,
 					},
@@ -156,43 +157,43 @@ yeasts:
 			}
 		})
 		It("Calculates BoilSpecificGravity", func() {
-			Ω(Round(recipe.BoilSpecificGravity(), .5, 3)).Should(Equal(1.085))
+			Ω(utils.Round(recipe.BoilSpecificGravity(), .5, 3)).Should(Equal(1.085))
 		})
 		It("Calculates OriginalGravity", func() {
-			Ω(Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(1.07))
+			Ω(utils.Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(1.07))
 		})
 		It("Calculates OriginalGravityPoints", func() {
-			Ω(Round(recipe.OriginalGravityPoints(), .5, 3)).Should(Equal(70.47))
+			Ω(utils.Round(recipe.OriginalGravityPoints(), .5, 3)).Should(Equal(70.47))
 		})
 		It("Calculates 0.0 OriginalGravity when no efficiency provided", func() {
 			recipe.Efficiency = 0
-			Ω(Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(0.0))
+			Ω(utils.Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(0.0))
 		})
 		It("Calculates 0.0 OriginalGravity when no Batch size", func() {
 			recipe.Batch = 0
-			Ω(Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(0.0))
+			Ω(utils.Round(recipe.OriginalGravity(), .5, 3)).Should(Equal(0.0))
 		})
 		It("Calculates EstimatedPreBoilVolume", func() {
-			Ω(Round(recipe.EstimatedPreBoilVolume(), .5, 1)).Should(Equal(13.2))
+			Ω(utils.Round(recipe.EstimatedPreBoilVolume(), .5, 1)).Should(Equal(13.2))
 		})
 		It("Calculates EstimatedFinalGravity", func() {
-			Ω(Round(recipe.EstimatedFinalGravity(), .5, 3)).Should(Equal(1.016))
+			Ω(utils.Round(recipe.EstimatedFinalGravity(), .5, 3)).Should(Equal(1.016))
 		})
 		It("Calculates AlcoholByVolume", func() {
-			Ω(Round(recipe.AlcoholByVolume(), .5, 2)).Should(Equal(7.10))
+			Ω(utils.Round(recipe.AlcoholByVolume(), .5, 2)).Should(Equal(7.10))
 		})
 		It("Calculates AlcoholByWeight", func() {
-			Ω(Round(recipe.AlcoholByWeight(), .5, 2)).Should(Equal(5.52))
+			Ω(utils.Round(recipe.AlcoholByWeight(), .5, 2)).Should(Equal(5.52))
 		})
 		It("Calculates InternationalBitteringUnits", func() {
-			Ω(Round(recipe.InternationalBitteringUnits(), .5, 1)).Should(Equal(37.8))
+			Ω(utils.Round(recipe.InternationalBitteringUnits(), .5, 1)).Should(Equal(37.8))
 		})
 		It("Calculates Color SRM", func() {
-			Ω(Round(recipe.Color(), .5, 1)).Should(Equal(9.4))
+			Ω(utils.Round(recipe.Color(), .5, 1)).Should(Equal(9.4))
 		})
 		It("Calculates Color SRM of 0 when no fermentables", func() {
-			recipe.Fermentables = []Fermentable{}
-			Ω(Round(recipe.Color(), .5, 1)).Should(Equal(0.0))
+			recipe.Fermentables = []ingredients.Fermentable{}
+			Ω(utils.Round(recipe.Color(), .5, 1)).Should(Equal(0.0))
 		})
 	})
 

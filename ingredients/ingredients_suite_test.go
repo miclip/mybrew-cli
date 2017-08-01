@@ -1,4 +1,4 @@
-package main_test
+package ingredients_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestMybrewgo(t *testing.T) {
+func TestIngredients(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Mybrewgo Suite")
+	RunSpecs(t, "Ingredients Suite")
 }

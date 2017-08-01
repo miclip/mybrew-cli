@@ -1,6 +1,10 @@
-package mybrewgo
+package ingredients
 
-import "log"
+import (
+	"log"
+
+	"github.com/miclip/mybrewgo/hoputils"
+)
 
 // Hop represents a single hop addition to a batch
 type Hop struct {
@@ -15,7 +19,7 @@ type Hop struct {
 // InternationalBitteringUnits calculates IBU for the hop using a variation on Tinseth’s formula that
 // incorporates a gravity/time adjustment instead of the bigness factor as documented by Randy Mosher
 // in the "Brewer's Companion". No IBU formula is perfect so expect variations.
-func (h *Hop) InternationalBitteringUnits(hopUtils *HopUtilizations, batch float64, gravity float64) float64 {
+func (h *Hop) InternationalBitteringUnits(hopUtils *hoputils.HopUtilizations, batch float64, gravity float64) float64 {
 	if h.Method != "Boil" {
 		return 0.0
 	}

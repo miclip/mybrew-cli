@@ -1,8 +1,9 @@
-package mybrewgo_test
+package ingredients_test
 
 import (
-	. "github.com/miclip/mybrewgo"
-
+	"github.com/miclip/mybrewgo/hoputils"
+	. "github.com/miclip/mybrewgo/ingredients"
+	"github.com/miclip/mybrewgo/utils"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -17,8 +18,8 @@ var _ = Describe("Hop", func() {
 			Method:       "Boil",
 			AdditionTime: 60,
 		}
-		hopUtils := NewHopUtilizations()
+		hopUtils := hoputils.NewHopUtilizations()
 		ibu := h.InternationalBitteringUnits(hopUtils, 11, 1.07)
-		Ω(Round(ibu, .5, 1)).Should(Equal(28.8))
+		Ω(utils.Round(ibu, .5, 1)).Should(Equal(28.8))
 	})
 })

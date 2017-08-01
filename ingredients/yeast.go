@@ -1,4 +1,4 @@
-package mybrewgo
+package ingredients
 
 // Yeast ...
 type Yeast struct {

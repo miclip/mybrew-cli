@@ -1,10 +1,18 @@
-package mybrewgo
+package recipe
+
+import (
+	"fmt"
+
+	"github.com/miclip/mybrewgo/hoputils"
+	"github.com/miclip/mybrewgo/ingredients"
+
+	yaml "gopkg.in/yaml.v2"
+)
 
 const (
 	yieldToPoints           = 0.46
 	gravityBase             = 0.00001
 	preBoilGallonsFactorEst = 1.2
-	hopUtilOunceFactor      = 7490
 )
 
 // Recipe ...
@@ -15,9 +23,18 @@ type Recipe struct {
 	Efficiency   float64
 	Method       string
 	BoilTime     float64
-	Hops         []Hop
-	Fermentables []Fermentable
-	Yeasts       []Yeast
+	Hops         []ingredients.Hop
+	Fermentables []ingredients.Fermentable
+	Yeasts       []ingredients.Yeast
+}
+
+// ParseRecipe ...
+func ParseRecipe(recipeYamlData string) (recipe *Recipe, err error) {
+	err = yaml.Unmarshal([]byte(recipeYamlData), &recipe)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to unmarshal recipe data with, %v", err)
+	}
+	return recipe, nil
 }
 
 // EstimatedPreBoilVolume estimates the preboil volume
@@ -64,7 +81,7 @@ func (r *Recipe) Color() float64 {
 // incorporates a gravity/time adjustment instead of the bigness factor as documented by Randy Mosher
 // in the "Brewer's Companion". No IBU formula is perfect so expect variations.
 func (r *Recipe) InternationalBitteringUnits() float64 {
-	hopUtils := NewHopUtilizations()
+	hopUtils := hoputils.NewHopUtilizations()
 	ibu := 0.0
 	if len(r.Hops) == 0 {
 		return 0.0
