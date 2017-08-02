@@ -44,7 +44,7 @@ yeasts:
   attenutation: 85`
 
 			var recipe *Recipe
-			recipe, err := ParseRecipe(recipeData)
+			recipe, err := UnmarshalRecipe([]byte(recipeData))
 			Ω(err).Should(Succeed())
 			Ω(recipe).ShouldNot(BeNil())
 			Ω(recipe.Name).Should(Equal("Test Recipe"))
