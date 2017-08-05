@@ -2,9 +2,13 @@ package recipe
 
 import (
 	"fmt"
+	"io/ioutil"
+	"path/filepath"
 
+	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/hoputils"
 	"github.com/miclip/mybrewgo/ingredients"
+	"github.com/miclip/mybrewgo/utils"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -18,6 +22,7 @@ const (
 // Recipe ...
 type Recipe struct {
 	Name         string
+	Version      int
 	Batch        float64
 	Style        string
 	Efficiency   float64
@@ -28,9 +33,21 @@ type Recipe struct {
 	Yeasts       []ingredients.Yeast
 }
 
-// ParseRecipe ...
-func ParseRecipe(recipeYamlData string) (recipe *Recipe, err error) {
-	err = yaml.Unmarshal([]byte(recipeYamlData), &recipe)
+// OpenRecipe ...
+func OpenRecipe(fileName string) (recipe *Recipe, err error) {
+	filePath, _ := filepath.Abs(fileName)
+	color.White("\nReading recipe file %v\n", filePath)
+	data, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		color.Red("Error reading file with: %v", err)
+		return nil, err
+	}
+	return UnmarshalRecipe(data)
+}
+
+// UnmarshalRecipe ...
+func UnmarshalRecipe(recipeYamlData []byte) (recipe *Recipe, err error) {
+	err = yaml.Unmarshal(recipeYamlData, &recipe)
 	if err != nil {
 		return nil, fmt.Errorf("Failed to unmarshal recipe data with, %v", err)
 	}
@@ -120,4 +137,14 @@ func (r *Recipe) AlcoholByWeight() float64 {
 		return 0.0
 	}
 	return (0.79 * r.AlcoholByVolume()) / r.EstimatedFinalGravity()
+}
+
+// Print ...
+func (r *Recipe) Print() {
+	fmt.Println("")
+	b := color.New(color.FgBlue).Add(color.Underline)
+	b.Printf("Recipe: %s\n", r.Name)
+	color.Blue("OG: %v FG: %v IBU: %v ABV: %v SRM: %v", utils.Round(r.OriginalGravity(), .5, 3), utils.Round(r.EstimatedFinalGravity(), .5, 3),
+		utils.Round(r.InternationalBitteringUnits(), .5, 1), utils.Round(r.AlcoholByVolume(), .5, 1), utils.Round(r.Color(), .5, 1))
+
 }
