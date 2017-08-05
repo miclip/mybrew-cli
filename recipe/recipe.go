@@ -141,9 +141,8 @@ func (r *Recipe) AlcoholByWeight() float64 {
 
 // Print writes recipe and ingredient details to stdout
 func (r *Recipe) Print() {
-	fmt.Println("")
 	bu := color.New(color.FgBlue).Add(color.Underline)
-	bu.Printf("Recipe: %s\n", r.Name)
+	bu.Printf("Recipe: %s Version: %d\n", r.Name, r.Version)
 	color.Blue("Style: %s", r.Style)
 	color.Blue("Batch Size: %v Boil Time: %v", r.Batch, r.BoilTime)
 	color.Blue("OG: %v FG: %v IBU: %v ABV: %v SRM: %v", utils.Round(r.OriginalGravity(), .5, 3), utils.Round(r.EstimatedFinalGravity(), .5, 3),

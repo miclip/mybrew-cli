@@ -27,23 +27,23 @@ var addCmd = &cobra.Command{
 	Long: `Adds a recipe from an external yaml file to the internal
 	repository. Calculations are performed and displayed.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		GetRecipes()
-		color.White("Recipe Add...")
+		recipes := recipe.NewRecipes()
+		color.White("Adding Recipe...")
 		r, err := recipe.OpenRecipe(args[0])
 		if err != nil {
 			color.Red("Error opening recipe file with: %v", err)
 		}
-		if Recipes[recipeKey(r)] != nil {
-			color.Red("Recipe %v already saved.", recipeKey(r))
+		if recipes.Recipes[recipes.RecipeKey(r)] != nil {
+			color.Red("A Recipe %v already exists, increment the version number.", recipes.RecipeKey(r))
 			return
 		}
-		Recipes[recipeKey(r)] = r
-		SaveRecipes()
+		recipes.Recipes[recipes.RecipeKey(r)] = r
+		recipes.SaveRecipes()
 		r.Print()
 	},
 }
 
 func init() {
-	recipeCmd.AddCommand(addCmd)
-	addCmd.Flags().StringP("path", "p", "", "Help message for path")
+	recipesCmd.AddCommand(addCmd)
+	//addCmd.Flags().StringP("path", "p", "", "Help message for path")
 }

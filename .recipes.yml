@@ -1,0 +1,72 @@
+- name: Accidental IPA
+  version: 0
+  batch: 11
+  style: American IPA
+  efficiency: 83
+  method: All Grain
+  boiltime: 90
+  hops:
+  - name: Galaxy
+    alpha: 13
+    amount: 1.25
+    form: Pellet
+    method: Boil
+    additiontime: 60
+  - name: Centennial
+    alpha: 9.9
+    amount: 1
+    form: Pellet
+    method: Boil
+    additiontime: 10
+  - name: Cascade
+    alpha: 6.7
+    amount: 1
+    form: Pellet
+    method: Boil
+    additiontime: 10
+  - name: Centennial
+    alpha: 9.9
+    amount: 1
+    form: Pellet
+    method: Boil
+    additiontime: 0
+  - name: Cascade
+    alpha: 6.7
+    amount: 1
+    form: Pellet
+    method: Boil
+    additiontime: 0
+  - name: Citra
+    alpha: 12
+    amount: 1
+    form: Pellet
+    method: Dry Hop
+    additiontime: 12
+  - name: Galaxy
+    alpha: 13
+    amount: 1.25
+    form: Pellet
+    method: Dry Hop
+    additiontime: 12
+  fermentables:
+  - name: 2 Row
+    amount: 23.35
+    yield: 77.9
+    potential: 1.036
+    lovibond: 2
+    type: Grain
+  - name: Vienna Malt
+    amount: 1.6
+    yield: 77.9
+    potential: 1.036
+    lovibond: 4
+    type: Grain
+  - name: White Wheat
+    amount: 1
+    yield: 86.7
+    potential: 1.04
+    lovibond: 2
+    type: Grain
+  yeasts:
+  - name: Safale American
+    attenuation: 77
