@@ -3,7 +3,9 @@ package ingredients
 import (
 	"log"
 
+	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/hoputils"
+	"github.com/miclip/mybrewgo/utils"
 )
 
 // Hop represents a single hop addition to a batch
@@ -29,4 +31,11 @@ func (h *Hop) InternationalBitteringUnits(hopUtils *hoputils.HopUtilizations, ba
 		return 0.0
 	}
 	return (((float64(hopUtil.Percentage) / 100) * (h.Alpha / 100) * h.Amount) * hopUtilOunceFactor) / batch
+}
+
+// Print writes details of the hop to stdout
+func (h *Hop) Print() {
+	color.Green("%s Amount: %v Time: %v Alpha: %v Form: %s Method: %s", h.Name, utils.Round(h.Amount, .5, 2),
+		h.AdditionTime, utils.Round(h.Alpha, .5, 1),
+		h.Form, h.Method)
 }
