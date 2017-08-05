@@ -73,10 +73,9 @@ Cascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil
 Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
 Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
 Yeasts:
-Safale American Attenution: 77```
-
-
-### Tasks/Features
+Safale American Attenution: 77
+```
+#### Tasks/Features
 
 - [x] Add Recipe from yaml
 - [x] Store in local repo (yaml)
