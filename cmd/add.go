@@ -15,9 +15,7 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
-
+	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/recipe"
 	"github.com/spf13/cobra"
 )
@@ -29,11 +27,18 @@ var addCmd = &cobra.Command{
 	Long: `Adds a recipe from an external yaml file to the internal
 	repository. Calculations are performed and displayed.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Recipe Add...")
+		GetRecipes()
+		color.White("Recipe Add...")
 		r, err := recipe.OpenRecipe(args[0])
 		if err != nil {
-			log.Printf("Error opening recipe file with: %v", err)
+			color.Red("Error opening recipe file with: %v", err)
 		}
+		if Recipes[recipeKey(r)] != nil {
+			color.Red("Recipe %v already saved.", recipeKey(r))
+			return
+		}
+		Recipes[recipeKey(r)] = r
+		SaveRecipes()
 		r.Print()
 	},
 }

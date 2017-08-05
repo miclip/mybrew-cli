@@ -2,14 +2,21 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
+	"path/filepath"
 
+	"github.com/miclip/mybrewgo/recipe"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	yaml "gopkg.in/yaml.v2"
 )
 
 var cfgFile, projectBase, userLicense string
+
+// Recipes ...
+var Recipes map[string]*recipe.Recipe
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
@@ -21,6 +28,49 @@ var RootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
 	},
+}
+
+// SaveRecipes ...
+func SaveRecipes() error {
+	var r []*recipe.Recipe
+	for _, v := range Recipes {
+		r = append(r, v)
+	}
+	data, err := yaml.Marshal(r)
+	if err != nil {
+		return err
+	}
+	ioutil.WriteFile(recipeFilepath(), data, 777)
+	return nil
+}
+
+func recipeFilepath() string {
+	return filepath.Join("./", "mybrewgo_recipes.yml")
+}
+
+// GetRecipes ...
+func GetRecipes() error {
+	if Recipes == nil {
+		Recipes = make(map[string]*recipe.Recipe)
+	}
+	f := recipeFilepath()
+	data, err := ioutil.ReadFile(f)
+	if err != nil {
+		return err
+	}
+	var r []*recipe.Recipe
+	err = yaml.Unmarshal(data, &r)
+	if err != nil {
+		return err
+	}
+	for _, v := range r {
+		Recipes[recipeKey(v)] = v
+	}
+	return nil
+}
+
+func recipeKey(recipe *recipe.Recipe) string {
+	return fmt.Sprintf("%s\\%v", recipe.Name, recipe.Version)
 }
 
 func init() {

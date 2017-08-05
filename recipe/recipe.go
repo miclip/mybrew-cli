@@ -3,7 +3,6 @@ package recipe
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"path/filepath"
 
 	"github.com/fatih/color"
@@ -23,6 +22,7 @@ const (
 // Recipe ...
 type Recipe struct {
 	Name         string
+	Version      int
 	Batch        float64
 	Style        string
 	Efficiency   float64
@@ -36,10 +36,10 @@ type Recipe struct {
 // OpenRecipe ...
 func OpenRecipe(fileName string) (recipe *Recipe, err error) {
 	filePath, _ := filepath.Abs(fileName)
-	fmt.Printf("\nReading recipe file %v\n", filePath)
+	color.White("\nReading recipe file %v\n", filePath)
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		log.Printf("Error reading file with: %v", err)
+		color.Red("Error reading file with: %v", err)
 		return nil, err
 	}
 	return UnmarshalRecipe(data)
