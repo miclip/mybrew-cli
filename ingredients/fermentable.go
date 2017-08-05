@@ -1,5 +1,10 @@
 package ingredients
 
+import (
+	"github.com/fatih/color"
+	"github.com/miclip/mybrewgo/utils"
+)
+
 // Fermentable ...
 type Fermentable struct {
 	Name      string
@@ -30,4 +35,10 @@ func (f *Fermentable) PointsByAmount() float64 {
 // ColorMCU calculates color in SRM
 func (f *Fermentable) ColorMCU() float64 {
 	return f.Amount * f.Lovibond
+}
+
+// Print writes details of the fermentable to stdout
+func (f *Fermentable) Print() {
+	color.Yellow("%s Amount: %v Yield: %v Potential: %v Lovibond: %v Type: %s", f.Name, utils.Round(f.Amount, .5, 1),
+		utils.Round(f.Yield, .5, 1), utils.Round(f.Potential, .5, 3), utils.Round(f.Lovibond, .5, 1), f.Type)
 }

@@ -15,36 +15,36 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/fatih/color"
+	"github.com/miclip/mybrewgo/recipe"
 	"github.com/spf13/cobra"
+)
+
+var (
+	name    string
+	version int
 )
 
 // recipeCmd represents the recipe command
 var recipeCmd = &cobra.Command{
 	Use:   "recipe",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "View and Manage a recipe store in the local repository ",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("recipe called")
+		if name != "" {
+			recipes := recipe.NewRecipes()
+			r := recipes.FindByKey(name, version)
+			if r == nil {
+				color.Red("Recipe '%s' version %v not found.", name, version)
+				return
+			}
+			r.Print()
+		}
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(recipeCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// recipeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// recipeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	recipeCmd.Flags().StringVarP(&name, "name", "n", "", "Name of the recipe")
+	recipeCmd.Flags().IntVarP(&version, "version", "v", 0, "Version of the recipe")
 }
