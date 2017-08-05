@@ -22,4 +22,17 @@ var _ = Describe("Hop", func() {
 		ibu := h.InternationalBitteringUnits(hopUtils, 11, 1.07)
 		Ω(utils.Round(ibu, .5, 1)).Should(Equal(28.8))
 	})
+	It("Calculates zero International Bittering Units with a non boil addition ", func() {
+		h := Hop{
+			Name:         "Galaxy",
+			Amount:       1.25,
+			Alpha:        13,
+			Form:         "Pellet",
+			Method:       "Dry Hop",
+			AdditionTime: 12,
+		}
+		hopUtils := hoputils.NewHopUtilizations()
+		ibu := h.InternationalBitteringUnits(hopUtils, 11, 1.07)
+		Ω(ibu).Should(Equal(0.0))
+	})
 })
