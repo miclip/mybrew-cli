@@ -15,3 +15,19 @@ At this point you should be able to run the unit tests:
 ```sh
 go test $(go list ./... | grep -v /vendor/)
 ```
+
+### Usage
+
+Add recipe and display basic recipe calculations:
+
+```mybrewgo recipe add ./test_data/accidental-ipa.yml
+
+Recipe Add...
+
+Reading recipe file .../mybrewgo/test_data/accidental-ipa.yml
+
+Recipe: Accidental IPA
+OG: 1.07 FG: 1.016 IBU: 37.8 ABV: 7.1 SRM: 9.4
+```
+
+Recipe will be added to a local YAML file name `mybrewgo_recipes.yml`
