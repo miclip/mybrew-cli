@@ -74,3 +74,20 @@ Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
 Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
 Yeasts:
 Safale American Attenution: 77```
+
+
+### Tasks/Features
+
+- [x] Add Recipe from yaml
+- [x] Store in local repo (yaml)
+- [x] Basic Recipe calculations
+- [x] Display basic recipe details
+- [ ] Find recipes
+- [ ] List recipes in local store
+- [ ] Add recipe via cli interface
+- [ ] Modify recipes via cli
+- [ ] Mashing calculations
+- [ ] Scaling recipes
+- [ ] Pulling ingredients from web api
+- [ ] Storing recipes in database via web api
+- [ ] Brew day instructions and calculations
