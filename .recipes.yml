@@ -1,4 +1,5 @@
-- name: Accidental IPA
+Accidental IPA\0:
+  name: Accidental IPA
   version: 0
   batch: 11
   style: American IPA
@@ -70,3 +71,46 @@
   yeasts:
   - name: Safale American
     attenuation: 77
+Czech Pilsner\0:
+  name: Czech Pilsner
+  version: 0
+  batch: 10
+  style: Bohemian Pilsner
+  efficiency: 70
+  method: All Grain
+  boiltime: 60
+  hops:
+  - name: Perle
+    alpha: 8
+    amount: 2
+    form: Pellet
+    method: Boil
+    additiontime: 60
+  - name: Saaz
+    alpha: 4
+    amount: 2
+    form: Pellet
+    method: Boil
+    additiontime: 30
+  - name: Saaz
+    alpha: 4
+    amount: 2
+    form: Pellet
+    method: Boil
+    additiontime: 15
+  fermentables:
+  - name: 2 Row
+    amount: 19
+    yield: 77.9
+    potential: 1.036
+    lovibond: 2
+    type: Grain
+  - name: Crystal 10
+    amount: 0.5
+    yield: 73.6
+    potential: 73.6
+    lovibond: 10
+    type: Grain
+  yeasts:
+  - name: Pilsner Lager Yeast
+    attenuation: 72

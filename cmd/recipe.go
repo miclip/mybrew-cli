@@ -31,8 +31,8 @@ var recipeCmd = &cobra.Command{
 	Short: "View and Manage a recipe store in the local repository ",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		recipes := recipe.NewRecipes()
 		if name != "" {
-			recipes := recipe.NewRecipes()
 			r := recipes.FindByKey(name, version)
 			if r == nil {
 				color.Red("Recipe '%s' version %v not found.", name, version)
