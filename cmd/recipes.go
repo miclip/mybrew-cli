@@ -15,36 +15,53 @@
 package cmd
 
 import (
-	"fmt"
+	"strconv"
 
+	"github.com/fatih/color"
+	"github.com/miclip/mybrewgo/recipe"
+	"github.com/miclip/mybrewgo/utils"
 	"github.com/spf13/cobra"
+)
+
+var (
+	findName string
 )
 
 // recipeCmd represents the recipe command
 var recipesCmd = &cobra.Command{
 	Use:   "recipes",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Manage the recipe repository",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("recipes called")
+		recipes := recipe.NewRecipes()
+		if findName != "" {
+			matches := recipes.SearchByName(findName)
+			if len(matches) == 0 {
+				color.Red("No recipes found for '%s'.", findName)
+				return
+			}
+			if len(matches) == 1 {
+				r := recipes.FindByKey(matches[0], 0)
+				r.Print()
+				return
+			}
+			color.White("Search results for '%s':", findName)
+			for i, v := range matches {
+				color.Green("%d. %s", i, v)
+			}
+			v := utils.AskForUserInput("Please select a result:")
+			i, err := strconv.ParseInt(v, 10, 0)
+			if err != nil {
+				color.Red("Invalid value. %v", v)
+				return
+			}
+			r := recipes.FindByKey(matches[i], 0)
+			r.Print()
+		}
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(recipesCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// recipeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// recipeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	recipesCmd.Flags().StringVarP(&findName, "search", "s", "", "Search a recipe by name")
 }

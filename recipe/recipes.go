@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -25,17 +26,27 @@ func (r *Recipes) FindByKey(name string, version int) *Recipe {
 	return r.Recipes[r.recipeKeyByName(name, version)]
 }
 
+// SearchByName ...
+func (r *Recipes) SearchByName(name string) []string {
+	var matches []string
+	for _, v := range r.Recipes {
+		if strings.Contains(strings.ToLower(v.Name), strings.TrimSpace(strings.ToLower(name))) {
+			matches = append(matches, v.Name)
+		}
+	}
+	return matches
+}
+
 // SaveRecipes ...
 func (r *Recipes) SaveRecipes() error {
-	var ra []*Recipe
-	for _, v := range r.Recipes {
-		ra = append(ra, v)
-	}
-	data, err := yaml.Marshal(r)
+	data, err := yaml.Marshal(r.Recipes)
 	if err != nil {
 		return err
 	}
-	ioutil.WriteFile(r.recipeFilepath(), data, 777)
+	err = ioutil.WriteFile(r.recipeFilepath(), data, 0644)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -53,13 +64,9 @@ func (r *Recipes) GetRecipes() error {
 	if err != nil {
 		return err
 	}
-	var ra []*Recipe
-	err = yaml.Unmarshal(data, &ra)
+	err = yaml.Unmarshal(data, &r.Recipes)
 	if err != nil {
 		return err
-	}
-	for _, v := range ra {
-		r.Recipes[r.RecipeKey(v)] = v
 	}
 	return nil
 }

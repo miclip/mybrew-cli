@@ -73,8 +73,34 @@ Cascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil
 Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
 Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
 Yeasts:
-Safale American Attenution: 77```
+Safale American Attenution: 77
+```
 
+##### Search By Name:
+
+```sh
+mybrewgo recipes -s 'c'
+
+Search results for 'c':
+0. Accidental IPA
+1. Czech Pilsner
+Please select a result:
+1
+...
+Recipe: Czech Pilsner Version: 0
+Style: Bohemian Pilsner
+Batch Size: 10 Boil Time: 60
+OG: 1.049 FG: 1.014 IBU: 54.5 ABV: 4.6 SRM: 9.3
+Fermentables:
+2 Row Amount: 19 Yield: 77.9 Potential: 1.036 Lovibond: 2 Type: Grain
+Crystal 10 Amount: 0.5 Yield: 73.6 Potential: 73.6 Lovibond: 10 Type: Grain
+Hops:
+Perle Amount: 2 Time: 60 Alpha: 8 Form: Pellet Method: Boil
+Saaz Amount: 2 Time: 30 Alpha: 4 Form: Pellet Method: Boil
+Saaz Amount: 2 Time: 15 Alpha: 4 Form: Pellet Method: Boil
+Yeasts:
+Pilsner Lager Yeast Attenution: 72
+```
 
 ### Tasks/Features
 
@@ -82,7 +108,7 @@ Safale American Attenution: 77```
 - [x] Store in local repo (yaml)
 - [x] Basic Recipe calculations
 - [x] Display basic recipe details
-- [ ] Find recipes
+- [x] Find recipes
 - [ ] List recipes in local store
 - [ ] Add recipe via cli interface
 - [ ] Modify recipes via cli

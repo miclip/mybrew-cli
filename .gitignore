@@ -14,4 +14,4 @@
 .glide/
 
 #ignore master recipes file
-mybrewgo_recipes.yml
+.recipes.yml

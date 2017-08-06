@@ -1,6 +1,13 @@
 package utils
 
-import "math"
+import (
+	"bufio"
+	"math"
+	"os"
+	"strings"
+
+	"github.com/fatih/color"
+)
 
 // Round rounds a float to a specific precision
 func Round(val float64, roundOn float64, places int) (newVal float64) {
@@ -15,4 +22,11 @@ func Round(val float64, roundOn float64, places int) (newVal float64) {
 	}
 	newVal = round / pow
 	return
+}
+
+func AskForUserInput(message string) string {
+	reader := bufio.NewReader(os.Stdin)
+	color.White(message)
+	text, _ := reader.ReadString('\n')
+	return strings.TrimSpace(text)
 }
