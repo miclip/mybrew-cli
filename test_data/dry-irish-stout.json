@@ -1,0 +1,51 @@
+{
+  "Name": "Dry Irish Stout",
+  "Version": 0,
+  "Batch": 5,
+  "Style": "Dry Irish Stout",
+  "Efficiency": 75,
+  "Method": "All Grain",
+  "BoilTime": 60,
+  "Fermentables": [
+    {
+      "Name": "Maris Otter",
+      "Amount": 6.0,
+      "Yield": 82.2,
+      "Potential": 1.038,
+      "Lovibond": 3,
+      "Type": "Grain"
+    },
+    {
+      "Name": "Flaked Barley",
+      "Amount": 2.0,
+      "Yield": 70.0,
+      "Potential": 1.032,
+      "Lovibond": 2,
+      "Type": "Grain"
+    },
+    {
+      "Name": "Roasted Barley",
+      "Amount": 1,
+      "Yield": 54.1,
+      "Potential": 1.025,
+      "Lovibond": 300,
+      "Type": "Grain"
+    }
+  ],
+  "Hops": [
+    {
+      "Name": "Cluster",
+      "Alpha": 6.5,
+      "Amount": 1.5,
+      "Form": "Pellet",
+      "Method": "Boil",
+      "AdditionTime": 60
+    }
+  ],
+  "Yeasts": [
+    {
+      "Name": "Irish Ale",
+      "Attenuation": 73
+    }
+  ]
+}
