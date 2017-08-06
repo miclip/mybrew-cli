@@ -44,7 +44,7 @@ yeasts:
   attenutation: 85`
 
 			var recipe *Recipe
-			recipe, err := UnmarshalRecipe([]byte(recipeData))
+			recipe, err := UnmarshalRecipeYML([]byte(recipeData))
 			Ω(err).Should(Succeed())
 			Ω(recipe).ShouldNot(BeNil())
 			Ω(recipe.Name).Should(Equal("Test Recipe"))
@@ -58,6 +58,25 @@ yeasts:
 			Ω(len(recipe.Yeasts)).Should(Equal(1))
 			Ω(recipe.Yeasts[0].Name).Should(Equal("California Ale"))
 		})
+		It("Unmarshals a recipe in json", func() {
+
+			recipeData := `{"Name":"Accidental IPA","Version":0,"Batch":11,"Style":"","Efficiency":83,"Method":"","BoilTime":90,"Hops":[{"Name":"Galaxy","Alpha":13,"Amount":1.25,"Form":"Pellet","Method":"Boil","AdditionTime":60},{"Name":"Centennial","Alpha":9.9,"Amount":1,"Form":"Pellet","Method":"Boil","AdditionTime":10},{"Name":"Cascade","Alpha":6.7,"Amount":1,"Form":"Pellet","Method":"Boil","AdditionTime":10},{"Name":"Centennial","Alpha":9.9,"Amount":1,"Form":"Pellet","Method":"Boil","AdditionTime":0},{"Name":"Cascade","Alpha":6.7,"Amount":1,"Form":"Pellet","Method":"Boil","AdditionTime":0},{"Name":"Citra","Alpha":12,"Amount":1,"Form":"Pellet","Method":"Dry Hop","AdditionTime":0},{"Name":"Galaxy","Alpha":13,"Amount":1,"Form":"Pellet","Method":"Dry Hop","AdditionTime":0}],"Fermentables":[{"Name":"2 Row","Amount":23.35,"Yield":77.9,"Potential":1.036,"Lovibond":2,"Type":""},{"Name":"Vienna Malt","Amount":1.6,"Yield":77.9,"Potential":1.036,"Lovibond":4,"Type":""},{"Name":"White Wheat","Amount":1,"Yield":86.7,"Potential":1.04,"Lovibond":2,"Type":""}],"Yeasts":[{"Name":"Safale American","Attenuation":77}]}`
+
+			var recipe *Recipe
+			recipe, err := UnmarshalRecipeJSON([]byte(recipeData))
+			Ω(err).Should(Succeed())
+			Ω(recipe).ShouldNot(BeNil())
+			Ω(recipe.Name).Should(Equal("Accidental IPA"))
+			Ω(len(recipe.Fermentables)).Should(Equal(3))
+			Ω(recipe.Fermentables[0].Amount).Should(Equal(23.35))
+			Ω(recipe.Fermentables[0].Yield).Should(Equal(77.9))
+			Ω(recipe.Fermentables[0].Potential).Should(Equal(1.036))
+			Ω(len(recipe.Hops)).Should(Equal(7))
+			Ω(recipe.Hops[0].Amount).Should(Equal(1.25))
+			Ω(recipe.Hops[0].Alpha).Should(Equal(13.0))
+			Ω(len(recipe.Yeasts)).Should(Equal(1))
+			Ω(recipe.Yeasts[0].Name).Should(Equal("Safale American"))
+		})
 		It("Unmarshal fails to read a recipe in yml", func() {
 
 			recipeData := `---
@@ -65,12 +84,18 @@ recipe:
 INVALID`
 
 			var recipe *Recipe
-			recipe, err := UnmarshalRecipe([]byte(recipeData))
+			recipe, err := UnmarshalRecipeYML([]byte(recipeData))
 			Ω(err).ShouldNot(Succeed())
 			Ω(recipe).Should(BeNil())
 		})
-		It("Can open a file and parse a recipe", func() {
+		It("Can open a yml file and parse a recipe", func() {
 			fileName := "../test_data/accidental-ipa.yml"
+			recipe, err := OpenRecipe(fileName)
+			Ω(err).Should(Succeed())
+			Ω(recipe).ShouldNot(BeNil())
+		})
+		It("Can open a json file and parse a recipe", func() {
+			fileName := "../test_data/dry-irish-stout.json"
 			recipe, err := OpenRecipe(fileName)
 			Ω(err).Should(Succeed())
 			Ω(recipe).ShouldNot(BeNil())

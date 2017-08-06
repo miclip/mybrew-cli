@@ -1,9 +1,11 @@
 package recipe
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/hoputils"
@@ -42,14 +44,26 @@ func OpenRecipe(fileName string) (recipe *Recipe, err error) {
 		color.Red("Error reading file with: %v", err)
 		return nil, err
 	}
-	return UnmarshalRecipe(data)
+	if strings.Contains(strings.ToLower(fileName), ".yml") {
+		return UnmarshalRecipeYML(data)
+	}
+	return UnmarshalRecipeJSON(data)
 }
 
-// UnmarshalRecipe ...
-func UnmarshalRecipe(recipeYamlData []byte) (recipe *Recipe, err error) {
+// UnmarshalRecipeYML ...
+func UnmarshalRecipeYML(recipeYamlData []byte) (recipe *Recipe, err error) {
 	err = yaml.Unmarshal(recipeYamlData, &recipe)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to unmarshal recipe data with, %v", err)
+		return nil, fmt.Errorf("Failed to unmarshal yml recipe data with, %v", err)
+	}
+	return recipe, nil
+}
+
+// UnmarshalRecipeJSON ...
+func UnmarshalRecipeJSON(recipeJSONData []byte) (recipe *Recipe, err error) {
+	err = json.Unmarshal(recipeJSONData, &recipe)
+	if err != nil {
+		return nil, fmt.Errorf("Failed to unmarshal json recipe data with, %v", err)
 	}
 	return recipe, nil
 }
