@@ -38,7 +38,10 @@ var addCmd = &cobra.Command{
 			return
 		}
 		recipes.Recipes[recipes.RecipeKey(r)] = r
-		recipes.SaveRecipes()
+		err = recipes.SaveRecipes()
+		if err != nil {
+			color.Red("Error saving recipe store with %v", err)
+		}
 		r.Print()
 	},
 }
