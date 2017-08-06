@@ -3,9 +3,8 @@ package recipe
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"path/filepath"
-	"sort"
+	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -27,16 +26,15 @@ func (r *Recipes) FindByKey(name string, version int) *Recipe {
 	return r.Recipes[r.recipeKeyByName(name, version)]
 }
 
-// SearchByName
-func (r *Recipes) SearchByName(name string) *Recipe {
-	var names []string
+// SearchByName ...
+func (r *Recipes) SearchByName(name string) []string {
+	var matches []string
 	for _, v := range r.Recipes {
-		names = append(names, v.Name)
+		if strings.Contains(strings.ToLower(v.Name), strings.TrimSpace(strings.ToLower(name))) {
+			matches = append(matches, v.Name)
+		}
 	}
-	sort.Strings(names)
-	index := sort.SearchStrings(names, name)
-	log.Printf("Search Index %v", index)
-	return r.FindByKey(names[index-1], 0)
+	return matches
 }
 
 // SaveRecipes ...

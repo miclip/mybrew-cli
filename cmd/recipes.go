@@ -15,8 +15,11 @@
 package cmd
 
 import (
+	"strconv"
+
 	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/recipe"
+	"github.com/miclip/mybrewgo/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -32,10 +35,27 @@ var recipesCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		recipes := recipe.NewRecipes()
 		if findName != "" {
-			r := recipes.SearchByName(findName)
-			if r == nil {
-				color.Red("No recipes found.")
+			matches := recipes.SearchByName(findName)
+			if len(matches) == 0 {
+				color.Red("No recipes found for '%s'.", findName)
+				return
 			}
+			if len(matches) == 1 {
+				r := recipes.FindByKey(matches[0], 0)
+				r.Print()
+				return
+			}
+			color.White("Search results for '%s':", findName)
+			for i, v := range matches {
+				color.Green("%d. %s", i, v)
+			}
+			v := utils.AskForUserInput("Please select a result:")
+			i, err := strconv.ParseInt(v, 10, 0)
+			if err != nil {
+				color.Red("Invalid value. %v", v)
+				return
+			}
+			r := recipes.FindByKey(matches[i], 0)
 			r.Print()
 		}
 	},
@@ -43,5 +63,5 @@ var recipesCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(recipesCmd)
-	recipesCmd.Flags().StringVarP(&findName, "find", "f", "", "Find a recipe by name")
+	recipesCmd.Flags().StringVarP(&findName, "search", "s", "", "Search a recipe by name")
 }
