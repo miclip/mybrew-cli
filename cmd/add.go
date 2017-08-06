@@ -37,7 +37,7 @@ var addCmd = &cobra.Command{
 			color.Red("A Recipe %v already exists, increment the version number.", recipes.RecipeKey(r))
 			return
 		}
-		recipes.Recipes[recipes.RecipeKey(r)] = r
+		recipes.AddRecipe(r)
 		err = recipes.SaveRecipes()
 		if err != nil {
 			color.Red("Error saving recipe store with %v", err)

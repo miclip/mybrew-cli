@@ -37,7 +37,7 @@ func (r *Recipes) SearchByName(name string) []string {
 	return matches
 }
 
-// SaveRecipes ...
+// SaveRecipes internal recipes to disk
 func (r *Recipes) SaveRecipes() error {
 	data, err := yaml.Marshal(r.Recipes)
 	if err != nil {
@@ -48,6 +48,11 @@ func (r *Recipes) SaveRecipes() error {
 		return err
 	}
 	return nil
+}
+
+// AddRecipe adds a recipe to the internal repository
+func (r *Recipes) AddRecipe(recipe *Recipe) {
+	r.Recipes[r.RecipeKey(recipe)] = recipe
 }
 
 func (r *Recipes) recipeFilepath() string {
