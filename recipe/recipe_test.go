@@ -58,6 +58,29 @@ yeasts:
 			Ω(len(recipe.Yeasts)).Should(Equal(1))
 			Ω(recipe.Yeasts[0].Name).Should(Equal("California Ale"))
 		})
+		It("Unmarshal fails to read a recipe in yml", func() {
+
+			recipeData := `---
+recipe:
+INVALID`
+
+			var recipe *Recipe
+			recipe, err := UnmarshalRecipe([]byte(recipeData))
+			Ω(err).ShouldNot(Succeed())
+			Ω(recipe).Should(BeNil())
+		})
+		It("Can open a file and parse a recipe", func() {
+			fileName := "../test_data/accidental-ipa.yml"
+			recipe, err := OpenRecipe(fileName)
+			Ω(err).Should(Succeed())
+			Ω(recipe).ShouldNot(BeNil())
+		})
+		It("Cannot open a file", func() {
+			fileName := "../test_data/does-not-exist.yml"
+			recipe, err := OpenRecipe(fileName)
+			Ω(err).ShouldNot(Succeed())
+			Ω(recipe).Should(BeNil())
+		})
 	})
 	Context("Recipe Calculations", func() {
 		var (

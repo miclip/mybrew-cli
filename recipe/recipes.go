@@ -64,6 +64,7 @@ func (r *Recipes) GetRecipes() error {
 	return nil
 }
 
+// RecipeKey returns the unique key for a recipe
 func (r *Recipes) RecipeKey(recipe *Recipe) string {
 	return r.recipeKeyByName(recipe.Name, recipe.Version)
 }
