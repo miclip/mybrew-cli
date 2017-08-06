@@ -13,11 +13,13 @@ var cfgFile, projectBase, userLicense string
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
-	Use:   "recipe",
-	Short: "Recipe is a very fast static site generator",
-	Long: `A Fast and Flexible Static Site Generator built with
-                love by spf13 and friends in Go.
-                Complete documentation is available at http://hugo.spf13.com`,
+	Use:   "mybrewgo",
+	Short: "MyBrewGo is a very fast command line interface for managing homebrew recipes.",
+	Long: `MyBrewGo is a very fast command line interface for managing homebrew recipes. MyBrewGo
+	supports recipes in either YAML, JSON, XML and can be added directly via the cli.
+
+	Recipes are stored local to the executable in the human readable YAML format. This enables
+	the user to choose a source code repository like github.com to store and backup your recipes.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Do Stuff Here
 	},

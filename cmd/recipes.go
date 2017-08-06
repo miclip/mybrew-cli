@@ -30,8 +30,11 @@ var (
 // recipeCmd represents the recipe command
 var recipesCmd = &cobra.Command{
 	Use:   "recipes",
-	Short: "Manage the recipe repository",
-	Long:  ``,
+	Short: "Manage the local recipes store.",
+	Long: `Manage the local store, functions available include Add & Search
+
+	The local store is a YAML file written to the same directory as the executable. This allows
+	you to use source control repository like github.com to save and backup your recipes.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		recipes := recipe.NewRecipes()
 		if findName != "" {
@@ -64,4 +67,5 @@ var recipesCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(recipesCmd)
 	recipesCmd.Flags().StringVarP(&findName, "search", "s", "", "Search a recipe by name")
+
 }

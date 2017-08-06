@@ -1,6 +1,10 @@
 # MyBrewGo
 
-Command Line Interface to manage Homebrew beer recipes and calculations
+MyBrewGo is a very fast command line interface for managing homebrew recipes. MyBrewGo
+supports recipes in either YAML, JSON, XML and they can be added directly via the cli.
+
+Recipes are stored local to the executable in the human readable YAML format. This enables
+the user to choose a source code repository like github.com to store and backup recipes.
 
 ### Developer Getting Started
 
