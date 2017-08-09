@@ -53,6 +53,35 @@ Safale American Attenution: 77
 
 Note: Recipe will be added to a local YAML file name `mybrewgo_recipes.yml`
 
+#### List Recipes
+List all the recipes in the local repository
+
+```sh
+mybrewgo recipes
+Recipes:
+0. Accidental IPA\\0	1. Czech Pilsner\\0	2. Dry Irish Stout\\0
+
+Select a recipe: 0
+
+Recipe: Accidental IPA Version: 0
+Style: American IPA
+Batch Size: 11 Boil Time: 90
+OG: 1.07 FG: 1.016 IBU: 37.8 ABV: 7.1 SRM: 9.4
+Fermentables:
+2 Row Amount: 23.4 Yield: 77.9 Potential: 1.036 Lovibond: 2 Type: Grain
+Vienna Malt Amount: 1.6 Yield: 77.9 Potential: 1.036 Lovibond: 4 Type: Grain
+White Wheat Amount: 1 Yield: 86.7 Potential: 1.04 Lovibond: 2 Type: Grain
+Hops:
+Galaxy Amount: 1.25 Time: 60 Alpha: 13 Form: Pellet Method: Boil
+Centennial Amount: 1 Time: 10 Alpha: 9.9 Form: Pellet Method: Boil
+Cascade Amount: 1 Time: 10 Alpha: 6.7 Form: Pellet Method: Boil
+Centennial Amount: 1 Time: 0 Alpha: 9.9 Form: Pellet Method: Boil
+Cascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil
+Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
+Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
+Yeasts:
+Safale American Attenution: 77
+```
 
 #### View Recipe
 ##### By Name and Version:
@@ -83,7 +112,7 @@ Safale American Attenution: 77
 ##### Search By Name:
 
 ```sh
-mybrewgo recipes -s 'c'
+mybrewgo recipes search 'c'
 
 Search results for 'c':
 0. Accidental IPA
@@ -113,7 +142,7 @@ Pilsner Lager Yeast Attenution: 72
 - [x] Basic Recipe calculations
 - [x] Display basic recipe details
 - [x] Find recipes
-- [ ] List recipes in local store
+- [x] List recipes in local store
 - [ ] Add recipe via cli interface
 - [ ] Modify recipes via cli
 - [ ] Mashing calculations

@@ -23,40 +23,46 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	findName string
-)
-
-// recipeCmd represents the recipe command
-var recipesCmd = &cobra.Command{
-	Use:   "recipes",
-	Short: "Manage the local recipes store.",
-	Long: `Manage the local store, functions available include Add & Search
-
-	The local store is a YAML file written to the same directory as the executable. This allows
-	you to use source control repository like github.com to save and backup your recipes.`,
+// searchCmd represents the search command
+var searchCmd = &cobra.Command{
+	Use:   "search",
+	Short: "Search for a item",
+	Long: `Search for a Recipe or Ingredient in the local repository
+	by Name.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		recipes := recipe.NewRecipes()
-		recipesTmp := make(map[int]string)
-		color.White("Recipes:")
-		i := 0
-		for k := range recipes.Recipes {
-			recipesTmp[i] = k
-			i++
+
+		if len(args) == 0 {
+			color.Red("No search arguments provided.")
+			return
 		}
-		utils.DisplayColumns(recipesTmp, 3)
-		v := utils.RequestUserInput("Select a recipe:")
-		s, err := strconv.ParseInt(v, 10, 0)
+		findName := args[0]
+		matches := recipes.SearchByName(findName)
+		if len(matches) == 0 {
+			color.Red("No recipes found for '%s'.", findName)
+			return
+		}
+		if len(matches) == 1 {
+			color.White("One recipe found, displaying recipe:")
+			r := recipes.FindByKey(matches[0], 0)
+			r.Print()
+			return
+		}
+		color.White("Search results for '%s', %d recipes found:", findName, len(matches))
+		for i, v := range matches {
+			color.Green("%d. %s", i, v)
+		}
+		v := utils.RequestUserInput("Please select a result:")
+		i, err := strconv.ParseInt(v, 10, 0)
 		if err != nil {
 			color.Red("Invalid value. %v", v)
 			return
 		}
-		r := recipes.Recipes[recipesTmp[int(s)]]
+		r := recipes.FindByKey(matches[i], 0)
 		r.Print()
-
 	},
 }
 
 func init() {
-	RootCmd.AddCommand(recipesCmd)
+	recipesCmd.AddCommand(searchCmd)
 }
