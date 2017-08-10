@@ -39,5 +39,10 @@ var _ = Describe("Recipes", func() {
 			Ω(matches).ShouldNot(BeNil())
 			Ω(len(matches)).Should(Equal(1))
 		})
+		It("returns the names slice", func() {
+			names := recipes.GetRecipeNames()
+			Ω(len(names)).Should(Equal(1))
+
+		})
 	})
 })

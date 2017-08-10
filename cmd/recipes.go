@@ -37,21 +37,16 @@ var recipesCmd = &cobra.Command{
 	you to use source control repository like github.com to save and backup your recipes.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		recipes := recipe.NewRecipes()
-		recipesTmp := make(map[int]string)
+		names := recipes.GetRecipeNames()
 		color.White("Recipes:")
-		i := 0
-		for k := range recipes.Recipes {
-			recipesTmp[i] = k
-			i++
-		}
-		utils.DisplayColumns(recipesTmp, 3)
+		utils.DisplayColumns(names, 3)
 		v := utils.RequestUserInput("Select a recipe:")
 		s, err := strconv.ParseInt(v, 10, 0)
 		if err != nil {
 			color.Red("Invalid value. %v", v)
 			return
 		}
-		r := recipes.Recipes[recipesTmp[int(s)]]
+		r := recipes.Recipes[names[s]]
 		r.Print()
 
 	},
