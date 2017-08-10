@@ -36,18 +36,16 @@ func RequestUserInput(message string) string {
 }
 
 // DisplayColumns prints to stdout the items by columns
-func DisplayColumns(items map[int]string, columns int) {
+func DisplayColumns(items []string, columns int) {
 	color.Set(color.FgGreen)
-
-	i := 0
-	for k, v := range items {
-		fmt.Printf("%d. %s\t", k, v)
-		if (i + 1) == columns {
+	ci := 0
+	for i, v := range items {
+		fmt.Printf("%d. %s\t", i, v)
+		if (ci + 1) == columns {
 			fmt.Print("\n")
 		}
-		i++
+		ci++
 	}
 	fmt.Print("\n")
 	color.Unset()
-
 }

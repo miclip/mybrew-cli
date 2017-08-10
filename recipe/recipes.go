@@ -76,6 +76,15 @@ func (r *Recipes) GetRecipes() error {
 	return nil
 }
 
+// GetRecipeNames returns a slice containing the key (name/version)
+func (r *Recipes) GetRecipeNames() []string {
+	var names []string
+	for k := range r.Recipes {
+		names = append(names, k)
+	}
+	return names
+}
+
 // RecipeKey returns the unique key for a recipe
 func (r *Recipes) RecipeKey(recipe *Recipe) string {
 	return r.recipeKeyByName(recipe.Name, recipe.Version)
