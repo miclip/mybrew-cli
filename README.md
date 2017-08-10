@@ -48,7 +48,7 @@ Cascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil
 Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
 Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
 Yeasts:
-Safale American Attenution: 77
+Safale American Attenuation: 77
 ```
 
 Note: Recipe will be added to a local YAML file name `mybrewgo_recipes.yml`
@@ -80,7 +80,7 @@ Cascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil
 Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
 Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
 Yeasts:
-Safale American Attenution: 77
+Safale American Attenuation: 77
 ```
 
 #### View Recipe
@@ -106,7 +106,7 @@ Cascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil
 Citra Amount: 1 Time: 12 Alpha: 12 Form: Pellet Method: Dry Hop
 Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop
 Yeasts:
-Safale American Attenution: 77
+Safale American Attenuation: 77
 ```
 
 ##### Search By Name:
@@ -132,7 +132,7 @@ Perle Amount: 2 Time: 60 Alpha: 8 Form: Pellet Method: Boil
 Saaz Amount: 2 Time: 30 Alpha: 4 Form: Pellet Method: Boil
 Saaz Amount: 2 Time: 15 Alpha: 4 Form: Pellet Method: Boil
 Yeasts:
-Pilsner Lager Yeast Attenution: 72
+Pilsner Lager Yeast Attenuation: 72
 ```
 
 ### Tasks/Features
