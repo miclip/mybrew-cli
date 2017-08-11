@@ -25,7 +25,7 @@ go test $(go list ./... | grep -v /vendor/)
 Add a recipe and display basic recipe calculations:
 
 ```sh
-mybrewgo recipes add ./test_data/accidental-ipa.yml
+mybrewgo recipes add --path ./test_data/accidental-ipa.yml
 
 Recipe Add...
 

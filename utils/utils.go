@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/fatih/color"
@@ -33,6 +34,54 @@ func RequestUserInput(message string) string {
 	color.Unset()
 	text, _ := reader.ReadString('\n')
 	return strings.TrimSpace(text)
+}
+
+// RequestUserInputFloat requests a float value via stdin from the user
+func RequestUserInputFloat(message string) float64 {
+	invalid := true
+	var result float64
+	color.Set(color.FgWhite)
+	for invalid {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print(message + " ")
+		text, err := reader.ReadString('\n')
+		if err != nil {
+			color.Red("Error reading input.")
+			continue
+		}
+		fstr := strings.TrimSpace(text)
+		result, err = strconv.ParseFloat(fstr, 64)
+		if err == nil {
+			break
+		}
+		color.Red("Invalid float, please enter a valid value.")
+	}
+	color.Unset()
+	return result
+}
+
+// RequestUserInputInt requests a int value via stdin from the user
+func RequestUserInputInt(message string) int {
+	invalid := true
+	var result int64
+	color.Set(color.FgWhite)
+	for invalid {
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print(message + " ")
+		text, err := reader.ReadString('\n')
+		if err != nil {
+			color.Red("Error reading input.")
+			continue
+		}
+		fstr := strings.TrimSpace(text)
+		result, err = strconv.ParseInt(fstr, 10, 0)
+		if err == nil {
+			break
+		}
+		color.Red("Invalid int, please enter a valid value.")
+	}
+	color.Unset()
+	return int(result)
 }
 
 // DisplayColumns prints to stdout the items by columns

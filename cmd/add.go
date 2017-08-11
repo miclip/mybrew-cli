@@ -20,6 +20,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	path string
+)
+
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
@@ -29,24 +33,37 @@ var addCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		recipes := recipe.NewRecipes()
 		color.White("Adding Recipe...")
-		r, err := recipe.OpenRecipe(args[0])
-		if err != nil {
-			color.Red("Error opening recipe file with: %v", err)
-		}
-		if recipes.Recipes[recipes.RecipeKey(r)] != nil {
-			color.Red("A Recipe %v already exists, increment the version number.", recipes.RecipeKey(r))
+		if path != "" {
+			r, err := recipe.OpenRecipe(args[0])
+			if err != nil {
+				color.Red("Error opening recipe file with: %v", err)
+			}
+			if recipes.Recipes[recipes.RecipeKey(r)] != nil {
+				color.Red("A Recipe %v already exists, increment the version number.", recipes.RecipeKey(r))
+				return
+			}
+			recipes.AddRecipe(r)
+			err = recipes.SaveRecipes()
+			if err != nil {
+				color.Red("Error saving recipe store with %v", err)
+			}
+			r.Print()
 			return
 		}
+
+		r := recipe.Create()
 		recipes.AddRecipe(r)
-		err = recipes.SaveRecipes()
-		if err != nil {
-			color.Red("Error saving recipe store with %v", err)
-		}
+		// err := recipes.SaveRecipes()
+		// if err != nil {
+		// 	color.Red("Error saving recipe store with %v", err)
+		// }
 		r.Print()
+
 	},
 }
 
 func init() {
 	recipesCmd.AddCommand(addCmd)
-	//addCmd.Flags().StringP("path", "p", "", "Help message for path")
+	addCmd.Flags().StringVarP(&path, "path", "p", "", "Help message for path")
+
 }

@@ -35,6 +35,30 @@ type Recipe struct {
 	Yeasts       []ingredients.Yeast
 }
 
+// Create adds a recipe via the cli
+func Create() *Recipe {
+	recipe := &Recipe{}
+	recipe.Name = utils.RequestUserInput("Recipe Name:")
+	recipe.Version = utils.RequestUserInputInt("Version Number:")
+	recipe.Batch = utils.RequestUserInputFloat("Batch Size:")
+	recipe.BoilTime = utils.RequestUserInputFloat("Boil Time:")
+	recipe.Efficiency = utils.RequestUserInputFloat("Efficiency:")
+	recipe.Method = utils.RequestUserInput("Method:")
+	recipe.Style = utils.RequestUserInput("Style:")
+	color.White("Ingredients...")
+	addIngedients := true
+	for addIngedients {
+		i := utils.RequestUserInput("Add Ingredient, Fermentable (f), Hop (h), Yeast (y), Save/Exit (s):")
+		if i == "s" {
+			break
+		}
+		if strings.ToLower(i) != "f" && strings.ToLower(i) != "h" && strings.ToLower(i) != "y" {
+			color.Red("Invalid Ingredient, must be either h,f,y or s")
+		}
+	}
+	return recipe
+}
+
 // OpenRecipe ...
 func OpenRecipe(fileName string) (recipe *Recipe, err error) {
 	filePath, _ := filepath.Abs(fileName)
