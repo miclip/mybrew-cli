@@ -33,6 +33,7 @@ var _ = Describe("Add", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
 			Ω(err).Should(Succeed())
 			handleAdd(nil, ui)
+			handleAdd(nil, ui)
 			Ω(bErr).To(gbytes.Say("already exists, increment the version number."))
 		})
 	})
