@@ -34,7 +34,6 @@ var searchCmd = &cobra.Command{
 
 func handleSearch(args []string, ui ui.UI) {
 	recipes := recipe.NewRecipes(ui)
-
 	if len(args) == 0 {
 		ui.ErrorLinef("No search arguments provided.")
 		return
