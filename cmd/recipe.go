@@ -15,8 +15,8 @@
 package cmd
 
 import (
-	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/recipe"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -31,16 +31,21 @@ var recipeCmd = &cobra.Command{
 	Short: "View and Manage a recipe store in the local repository ",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		recipes := recipe.NewRecipes()
-		if name != "" {
-			r := recipes.FindByKey(name, version)
-			if r == nil {
-				color.Red("Recipe '%s' version %v not found.", name, version)
-				return
-			}
-			r.Print()
-		}
+		ui := ui.NewConsoleUI()
+		handleRecipe(args, ui)
 	},
+}
+
+func handleRecipe(args []string, ui ui.UI) {
+	recipes := recipe.NewRecipes(ui)
+	if name != "" {
+		r := recipes.FindByKey(name, version)
+		if r == nil {
+			ui.ErrorLinef("Recipe '%s' version %v not found.", name, version)
+			return
+		}
+		r.Print(ui)
+	}
 }
 
 func init() {

@@ -6,17 +6,20 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/miclip/mybrewgo/ui"
+
 	yaml "gopkg.in/yaml.v2"
 )
 
 // Recipes ...
 type Recipes struct {
 	Recipes map[string]*Recipe
+	ui      ui.UI
 }
 
 // NewRecipes ...
-func NewRecipes() Recipes {
-	r := Recipes{}
+func NewRecipes(ui ui.UI) Recipes {
+	r := Recipes{ui: ui}
 	r.GetRecipes()
 	return r
 }

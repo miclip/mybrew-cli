@@ -15,11 +15,8 @@
 package cmd
 
 import (
-	"strconv"
-
-	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/recipe"
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -36,20 +33,19 @@ var recipesCmd = &cobra.Command{
 	The local store is a YAML file written to the same directory as the executable. This allows
 	you to use source control repository like github.com to save and backup your recipes.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		recipes := recipe.NewRecipes()
-		names := recipes.GetRecipeNames()
-		color.White("Recipes:")
-		utils.DisplayColumns(names, 3)
-		v := utils.RequestUserInput("Select a recipe:")
-		s, err := strconv.ParseInt(v, 10, 0)
-		if err != nil {
-			color.Red("Invalid value. %v", v)
-			return
-		}
-		r := recipes.Recipes[names[s]]
-		r.Print()
-
+		ui := ui.NewConsoleUI()
+		handleRecipes(args, ui)
 	},
+}
+
+func handleRecipes(args []string, ui ui.UI) {
+	recipes := recipe.NewRecipes(ui)
+	names := recipes.GetRecipeNames()
+	ui.SystemLinef("Recipes:")
+	ui.DisplayColumns(names, 3)
+	s := ui.AskForInt("Select a recipe:")
+	r := recipes.Recipes[names[s]]
+	r.Print(ui)
 }
 
 func init() {
