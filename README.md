@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/miclip/mybrewgo.svg?branch=master)](https://travis-ci.org/miclip/mybrewgo)
+[![codecov](https://codecov.io/gh/miclip/mybrewgo/branch/master/graph/badge.svg)](https://codecov.io/gh/miclip/mybrewgo)
+
 # MyBrewGo
 
 MyBrewGo is a very fast command line interface for managing homebrew recipes. MyBrewGo
