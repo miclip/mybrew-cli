@@ -2,6 +2,7 @@ package hoputils
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/miclip/mybrewgo/utils"
 )
@@ -29,7 +30,8 @@ var (
 
 // HopUtilizations ...
 type HopUtilizations struct {
-	Matrix map[string][]HopUtilization
+	Pellet []HopUtilization
+	Whole  []HopUtilization
 }
 
 // HopUtilization ...
@@ -41,19 +43,19 @@ type HopUtilization struct {
 
 // NewHopUtilizations creates a new HopUtilization matrix
 func NewHopUtilizations() *HopUtilizations {
-	h := make(map[string][]HopUtilization)
-	h["Pellet"] = defaultPelletHopUtilizations
-	h["Whole"] = defaultWholeHopUtilizations
 	return &HopUtilizations{
-		Matrix: h,
+		Pellet: defaultPelletHopUtilizations,
+		Whole:  defaultWholeHopUtilizations,
 	}
 }
 
 // FindHopUtilization finds the hop utilization for a specific addition time, gravity and hop type
 func (h *HopUtilizations) FindHopUtilization(additionTime int, gravity float64, hopForm string) (*HopUtilization, error) {
-	hopUtils, ok := h.Matrix[hopForm]
-	if !ok {
-		return nil, fmt.Errorf("No Hop Utilizations found for Hop Form %s", hopForm)
+	var hopUtils []HopUtilization
+	if strings.ToLower(hopForm) == "whole" {
+		hopUtils = h.Whole
+	} else {
+		hopUtils = h.Pellet
 	}
 	var l, u *HopUtilization
 	lmin, umin := h.findLowerMinutes(additionTime), h.findUpperMinutes(additionTime)
