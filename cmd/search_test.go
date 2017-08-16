@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"path/filepath"
 	"time"
 
 	"github.com/miclip/mybrewgo/fakes"
@@ -16,8 +17,8 @@ var _ = Describe("Search Cmd", func() {
 		var (
 			bOut *gbytes.Buffer
 			bErr *gbytes.Buffer
-			//err  error
-			ui ui.UI
+			err  error
+			ui   ui.UI
 		)
 		BeforeEach(func() {
 			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
@@ -33,6 +34,27 @@ var _ = Describe("Search Cmd", func() {
 			args[0] = "test"
 			handleSearch(args, ui)
 			Ω(bErr).To(gbytes.Say("No recipes found for 'test'."))
+		})
+		It("finds one recipe", func() {
+			args := make([]string, 1)
+			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
+			Ω(err).Should(Succeed())
+			handleAdd(nil, ui)
+			args[0] = "acc"
+			handleSearch(args, ui)
+			Ω(bOut).To(gbytes.Say("Adding Recipe...\nOne recipe found, displaying recipe:\nRecipe: Accidental IPA Version: 0\nStyle: American IPA\nBatch Size: 11 Boil Time: 90"))
+		})
+		It("finds multiple recipes", func() {
+			args := make([]string, 1)
+			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
+			Ω(err).Should(Succeed())
+			handleAdd(nil, ui)
+			path, err = filepath.Abs("../test_data/czech-pilsner.yml")
+			Ω(err).Should(Succeed())
+			handleAdd(nil, ui)
+			args[0] = "c"
+			handleSearch(args, ui)
+			Ω(bOut).To(gbytes.Say("Search results for 'c', 2 recipes found:"))
 		})
 
 	})
