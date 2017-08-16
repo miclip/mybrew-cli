@@ -1,12 +1,17 @@
 package recipe_test
 
 import (
+	"time"
+
+	"github.com/miclip/mybrewgo/fakes"
 	"github.com/miclip/mybrewgo/ingredients"
 	. "github.com/miclip/mybrewgo/recipe"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/miclip/mybrewgo/utils"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"github.com/onsi/gomega/gbytes"
 )
 
 var _ = Describe("Recipe", func() {
@@ -245,4 +250,116 @@ INVALID`
 		})
 	})
 
+	Context("UI", func() {
+		var (
+			bOut *gbytes.Buffer
+			bErr *gbytes.Buffer
+			ui   ui.UI
+		)
+		BeforeEach(func() {
+			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
+			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
+			ui = fakes.NewFakeUI(bOut, bErr)
+		})
+		It("Prints a recipe", func() {
+			r := Recipe{
+				Name:       "Accidental IPA",
+				Style:      "India Pale Ale",
+				Batch:      11,
+				Efficiency: 83,
+				BoilTime:   90,
+				Hops: []ingredients.Hop{
+					ingredients.Hop{
+						Name:         "Galaxy",
+						Amount:       1.25,
+						Alpha:        13,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 60,
+					},
+					ingredients.Hop{
+						Name:         "Centennial",
+						Amount:       1.0,
+						Alpha:        9.9,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 10,
+					},
+					ingredients.Hop{
+						Name:         "Cascade",
+						Amount:       1.0,
+						Alpha:        6.7,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 10,
+					},
+					ingredients.Hop{
+						Name:         "Centennial",
+						Amount:       1.0,
+						Alpha:        9.9,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 0,
+					},
+					ingredients.Hop{
+						Name:         "Cascade",
+						Amount:       1.0,
+						Alpha:        6.7,
+						Form:         "Pellet",
+						Method:       "Boil",
+						AdditionTime: 0,
+					},
+					ingredients.Hop{
+						Name:   "Citra",
+						Amount: 1.0,
+						Alpha:  12.0,
+						Form:   "Pellet",
+						Method: "Dry Hop",
+					},
+					ingredients.Hop{
+						Name:   "Galaxy",
+						Amount: 1.0,
+						Alpha:  13.0,
+						Form:   "Pellet",
+						Method: "Dry Hop",
+					},
+				},
+				Fermentables: []ingredients.Fermentable{
+					ingredients.Fermentable{
+						Name:      "2 Row",
+						Amount:    23.35,
+						Potential: 1.036,
+						Yield:     77.9,
+						Lovibond:  2,
+						Type:      "Grain",
+					},
+					ingredients.Fermentable{
+						Name:      "Vienna Malt",
+						Amount:    1.6,
+						Potential: 1.036,
+						Yield:     77.9,
+						Lovibond:  4,
+						Type:      "Grain",
+					},
+					ingredients.Fermentable{
+						Name:      "White Wheat",
+						Amount:    1.0,
+						Potential: 1.04,
+						Yield:     86.7,
+						Lovibond:  2,
+						Type:      "Grain",
+					},
+				},
+				Yeasts: []ingredients.Yeast{
+					ingredients.Yeast{
+						Name:        "Safale American",
+						Attenuation: 77,
+					},
+				},
+			}
+
+			r.Print(ui)
+			Ω(bOut).To(gbytes.Say("Recipe: Accidental IPA Version: 0\nStyle: India Pale Ale\nBatch Size: 11 Boil Time: 90\nOG: 1.07 FG: 1.016 IBU: 37.8 ABV: 7.1 SRM: 9.4\nFermentables: \n2 Row Amount: 23.4 Yield: 77.9 Potential: 1.036 Lovibond: 2 Type: Grain\nVienna Malt Amount: 1.6 Yield: 77.9 Potential: 1.036 Lovibond: 4 Type: Grain\nWhite Wheat Amount: 1 Yield: 86.7 Potential: 1.04 Lovibond: 2 Type: Grain\nHops: \nGalaxy Amount: 1.25 Time: 60 Alpha: 13 Form: Pellet Method: Boil\nCentennial Amount: 1 Time: 10 Alpha: 9.9 Form: Pellet Method: Boil\nCascade Amount: 1 Time: 10 Alpha: 6.7 Form: Pellet Method: Boil\nCentennial Amount: 1 Time: 0 Alpha: 9.9 Form: Pellet Method: Boil\nCascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil\nCitra Amount: 1 Time: 0 Alpha: 12 Form: Pellet Method: Dry Hop\nGalaxy Amount: 1 Time: 0 Alpha: 13 Form: Pellet Method: Dry Hop\nYeasts: \nSafale American Attenuation: 77"))
+		})
+	})
 })
