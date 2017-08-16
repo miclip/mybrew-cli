@@ -15,9 +15,13 @@
 package cmd
 
 import (
-	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/recipe"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/spf13/cobra"
+)
+
+var (
+	path string
 )
 
 // addCmd represents the add command
@@ -25,28 +29,46 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Add a recipe to the internal repo.",
 	Long: `Adds a recipe from an external yaml file to the internal
-	repository. Calculations are performed and displayed.`,
+	repository. Calculations are displayed.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		recipes := recipe.NewRecipes()
-		color.White("Adding Recipe...")
-		r, err := recipe.OpenRecipe(args[0])
+		ui := ui.NewConsoleUI()
+		handleAdd(args, ui)
+	},
+}
+
+func handleAdd(args []string, ui ui.UI) {
+	recipes := recipe.NewRecipes(ui)
+	ui.SystemLinef("Adding Recipe...")
+	if path != "" {
+		r, err := recipe.OpenRecipe(path)
 		if err != nil {
-			color.Red("Error opening recipe file with: %v", err)
+			ui.ErrorLinef("Error adding recipe: %v", err)
+			return
 		}
 		if recipes.Recipes[recipes.RecipeKey(r)] != nil {
-			color.Red("A Recipe %v already exists, increment the version number.", recipes.RecipeKey(r))
+			ui.ErrorLinef("A Recipe %v already exists, increment the version number.", recipes.RecipeKey(r))
 			return
 		}
 		recipes.AddRecipe(r)
 		err = recipes.SaveRecipes()
 		if err != nil {
-			color.Red("Error saving recipe store with %v", err)
+			ui.ErrorLinef("Error saving recipe store with %v", err)
 		}
-		r.Print()
-	},
+		r.Print(ui)
+		return
+	}
+
+	r := recipe.Create(ui)
+	recipes.AddRecipe(r)
+	// err := recipes.SaveRecipes()
+	// if err != nil {
+	// 	color.Red("Error saving recipe store with %v", err)
+	// }
+	r.Print(ui)
 }
 
 func init() {
 	recipesCmd.AddCommand(addCmd)
-	//addCmd.Flags().StringP("path", "p", "", "Help message for path")
+	addCmd.Flags().StringVarP(&path, "path", "p", "", "Help message for path")
+
 }

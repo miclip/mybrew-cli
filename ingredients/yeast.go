@@ -1,7 +1,7 @@
 package ingredients
 
 import (
-	"github.com/fatih/color"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/miclip/mybrewgo/utils"
 )
 
@@ -12,6 +12,6 @@ type Yeast struct {
 }
 
 // Print writes details of the yeasts to stdout
-func (y *Yeast) Print() {
-	color.Magenta("%s Attenuation: %v", y.Name, utils.Round(y.Attenuation, .5, 2))
+func (y *Yeast) Print(ui ui.UI) {
+	ui.PrintLinef("%s Attenuation: %v", y.Name, utils.Round(y.Attenuation, .5, 2))
 }

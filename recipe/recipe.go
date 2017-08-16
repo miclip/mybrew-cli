@@ -10,6 +10,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/hoputils"
 	"github.com/miclip/mybrewgo/ingredients"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/miclip/mybrewgo/utils"
 
 	yaml "gopkg.in/yaml.v2"
@@ -35,14 +36,37 @@ type Recipe struct {
 	Yeasts       []ingredients.Yeast
 }
 
+// Create adds a recipe via the cli
+func Create(ui ui.UI) *Recipe {
+	recipe := &Recipe{}
+	recipe.Name = ui.AskForText("Recipe Name:")
+	recipe.Version = ui.AskForInt("Version Number:")
+	recipe.Batch = ui.AskForFloat("Batch Size:")
+	recipe.BoilTime = ui.AskForFloat("Boil Time:")
+	recipe.Efficiency = ui.AskForFloat("Efficiency:")
+	recipe.Method = ui.AskForText("Method:")
+	recipe.Style = ui.AskForText("Style:")
+	color.White("Ingredients...")
+	addIngedients := true
+	for addIngedients {
+		i := ui.AskForText("Add Ingredient, Fermentable (f), Hop (h), Yeast (y), Save/Exit (s):")
+		if i == "s" {
+			break
+		}
+		if strings.ToLower(i) != "f" && strings.ToLower(i) != "h" && strings.ToLower(i) != "y" {
+			color.Red("Invalid Ingredient, must be either h,f,y or s")
+		}
+	}
+	return recipe
+}
+
 // OpenRecipe ...
 func OpenRecipe(fileName string) (recipe *Recipe, err error) {
 	filePath, _ := filepath.Abs(fileName)
 	color.White("Reading recipe file %v", filePath)
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		color.Red("Error reading file with: %v", err)
-		return nil, err
+		return nil, fmt.Errorf("failed to read file with: %v", err)
 	}
 	if strings.Contains(strings.ToLower(fileName), ".yml") {
 		return UnmarshalRecipeYML(data)
@@ -154,29 +178,28 @@ func (r *Recipe) AlcoholByWeight() float64 {
 }
 
 // Print writes recipe and ingredient details to stdout
-func (r *Recipe) Print() {
-	bu := color.New(color.FgBlue).Add(color.Underline)
-	bu.Printf("Recipe: %s Version: %d\n", r.Name, r.Version)
-	color.Blue("Style: %s", r.Style)
-	color.Blue("Batch Size: %v Boil Time: %v", r.Batch, r.BoilTime)
-	color.Blue("OG: %v FG: %v IBU: %v ABV: %v SRM: %v", utils.Round(r.OriginalGravity(), .5, 3), utils.Round(r.EstimatedFinalGravity(), .5, 3),
+func (r *Recipe) Print(ui ui.UI) {
+	ui.PrintLinef("Recipe: %s Version: %d", r.Name, r.Version)
+	ui.PrintLinef("Style: %s", r.Style)
+	ui.PrintLinef("Batch Size: %v Boil Time: %v", r.Batch, r.BoilTime)
+	ui.PrintLinef("OG: %v FG: %v IBU: %v ABV: %v SRM: %v", utils.Round(r.OriginalGravity(), .5, 3), utils.Round(r.EstimatedFinalGravity(), .5, 3),
 		utils.Round(r.InternationalBitteringUnits(), .5, 1), utils.Round(r.AlcoholByVolume(), .5, 1), utils.Round(r.Color(), .5, 1))
 	if len(r.Fermentables) > 0 {
-		color.Yellow("Fermentables: ")
+		ui.PrintLinef("Fermentables: ")
 	}
 	for _, v := range r.Fermentables {
-		v.Print()
+		v.Print(ui)
 	}
 	if len(r.Hops) > 0 {
-		color.Green("Hops: ")
+		ui.PrintLinef("Hops: ")
 	}
 	for _, v := range r.Hops {
-		v.Print()
+		v.Print(ui)
 	}
 	if len(r.Yeasts) > 0 {
-		color.Magenta("Yeasts: ")
+		ui.PrintLinef("Yeasts: ")
 	}
 	for _, v := range r.Yeasts {
-		v.Print()
+		v.Print(ui)
 	}
 }

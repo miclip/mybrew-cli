@@ -9,12 +9,12 @@ import (
 
 var _ = Describe("Recipes", func() {
 	It("Creates a new instance of Recipes", func() {
-		recipes := NewRecipes()
+		recipes := NewRecipes(nil)
 		Ω(recipes).ShouldNot(BeNil())
 		Ω(len(recipes.Recipes)).Should(Equal(0))
 	})
 	It("Creates a new instance of Recipes and loads recipes", func() {
-		recipes := NewRecipes()
+		recipes := NewRecipes(nil)
 		fileName := "../test_data/accidental-ipa.yml"
 		recipe, err := OpenRecipe(fileName)
 		Ω(err).Should(Succeed())
@@ -23,7 +23,7 @@ var _ = Describe("Recipes", func() {
 	Context("Recipes loaded in local repository", func() {
 		var recipes Recipes
 		BeforeEach(func() {
-			recipes = NewRecipes()
+			recipes = NewRecipes(nil)
 			fileName := "../test_data/accidental-ipa.yml"
 			recipe, _ := OpenRecipe(fileName)
 			Ω(recipe).ShouldNot(BeNil())

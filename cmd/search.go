@@ -15,11 +15,8 @@
 package cmd
 
 import (
-	"strconv"
-
-	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/recipe"
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrewgo/ui"
 	"github.com/spf13/cobra"
 )
 
@@ -30,37 +27,35 @@ var searchCmd = &cobra.Command{
 	Long: `Search for a Recipe or Ingredient in the local repository
 	by Name.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		recipes := recipe.NewRecipes()
-
-		if len(args) == 0 {
-			color.Red("No search arguments provided.")
-			return
-		}
-		findName := args[0]
-		matches := recipes.SearchByName(findName)
-		if len(matches) == 0 {
-			color.Red("No recipes found for '%s'.", findName)
-			return
-		}
-		if len(matches) == 1 {
-			color.White("One recipe found, displaying recipe:")
-			r := recipes.FindByKey(matches[0], 0)
-			r.Print()
-			return
-		}
-		color.White("Search results for '%s', %d recipes found:", findName, len(matches))
-		for i, v := range matches {
-			color.Green("%d. %s", i, v)
-		}
-		v := utils.RequestUserInput("Please select a result:")
-		i, err := strconv.ParseInt(v, 10, 0)
-		if err != nil {
-			color.Red("Invalid value. %v", v)
-			return
-		}
-		r := recipes.FindByKey(matches[i], 0)
-		r.Print()
+		ui := ui.NewConsoleUI()
+		handleSearch(args, ui)
 	},
+}
+
+func handleSearch(args []string, ui ui.UI) {
+	recipes := recipe.NewRecipes(ui)
+
+	if len(args) == 0 {
+		ui.ErrorLinef("No search arguments provided.")
+		return
+	}
+	findName := args[0]
+	matches := recipes.SearchByName(findName)
+	if len(matches) == 0 {
+		ui.ErrorLinef("No recipes found for '%s'.", findName)
+		return
+	}
+	if len(matches) == 1 {
+		ui.SystemLinef("One recipe found, displaying recipe:")
+		r := recipes.FindByKey(matches[0], 0)
+		r.Print(ui)
+		return
+	}
+	ui.SystemLinef("Search results for '%s', %d recipes found:", findName, len(matches))
+	ui.DisplayColumns(matches, 3)
+	i := ui.AskForInt("Please select a result:")
+	r := recipes.FindByKey(matches[i], 0)
+	r.Print(ui)
 }
 
 func init() {
