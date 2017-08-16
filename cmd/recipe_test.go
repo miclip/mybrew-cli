@@ -29,7 +29,6 @@ var _ = Describe("Recipe Cmd", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
 			Ω(err).Should(Succeed())
 			handleAdd(nil, ui)
-			Ω(bErr).To(gbytes.Say("already exists, increment the version number."))
 			name = "Accidental IPA"
 			version = 0
 			handleRecipe(nil, ui)
@@ -39,7 +38,6 @@ var _ = Describe("Recipe Cmd", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
 			Ω(err).Should(Succeed())
 			handleAdd(nil, ui)
-			Ω(bErr).To(gbytes.Say("already exists, increment the version number."))
 			name = "Doesn't Exist"
 			version = 0
 			handleRecipe(nil, ui)
