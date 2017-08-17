@@ -82,7 +82,7 @@ var _ = Describe("UI", func() {
 			items[4] = "fifth"
 			items[5] = "sixth"
 			ui.DisplayColumns(items, 3)
-			Ω(bOut).To(gbytes.Say("0. first	1. second	2. third	\n3. fourth	4. fifth	5. sixth"))
+			Ω(bOut).To(gbytes.Say(`0\.\sfirst\t1\.\ssecond\t2\.\sthird\t\s3\.\sfourth\t4\.\sfifth\t5\.\ssixth\t\s`))
 		})
 	})
 
