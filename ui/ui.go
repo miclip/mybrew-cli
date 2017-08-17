@@ -70,11 +70,11 @@ func (w *WriterUI) Errorf(pattern string, args ...interface{}) {
 func (w *WriterUI) DisplayColumns(items []string, columns int) {
 	ci := 0
 	for i, v := range items {
-		w.contentColor.Fprintf(w.outWriter, "%d. %s\t", i, v)
+		w.Printf("%d. %s\t", i, v)
 		if (ci + 1) == columns {
-			w.contentColor.Fprintf(w.outWriter, "\n")
+			w.Printf("\n")
 		}
 		ci++
 	}
-	w.contentColor.Fprintf(w.outWriter, "\n")
+	w.Printf("\n")
 }
