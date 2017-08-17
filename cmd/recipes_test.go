@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/miclip/mybrewgo/fakes"
+	"github.com/miclip/mybrewgo/recipe"
 	"github.com/miclip/mybrewgo/ui"
 
 	. "github.com/onsi/ginkgo"
@@ -24,6 +25,8 @@ var _ = Describe("Recipes Cmd", func() {
 			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
 			ui = fakes.NewFakeUI(bOut, bErr)
+			r := recipe.NewRecipes(ui)
+			r.DeleteRecipes()
 		})
 		It("lists all recipes in the local repository", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")

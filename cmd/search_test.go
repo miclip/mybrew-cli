@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/miclip/mybrewgo/fakes"
+	"github.com/miclip/mybrewgo/recipe"
 	"github.com/miclip/mybrewgo/ui"
 
 	. "github.com/onsi/ginkgo"
@@ -24,6 +25,8 @@ var _ = Describe("Search Cmd", func() {
 			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
 			ui = fakes.NewFakeUI(bOut, bErr)
+			r := recipe.NewRecipes(ui)
+			r.DeleteRecipes()
 		})
 		It("fails when no arguments are provided", func() {
 			handleSearch(nil, ui)
@@ -40,9 +43,10 @@ var _ = Describe("Search Cmd", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
 			Ω(err).Should(Succeed())
 			handleAdd(nil, ui)
+			Ω(bOut).To(gbytes.Say("Adding Recipe...\n"))
 			args[0] = "acc"
 			handleSearch(args, ui)
-			Ω(bOut).To(gbytes.Say("Adding Recipe...\nOne recipe found, displaying recipe:\nRecipe: Accidental IPA Version: 0\nStyle: American IPA\nBatch Size: 11 Boil Time: 90"))
+			Ω(bOut).To(gbytes.Say("One recipe found, displaying recipe:\nRecipe: Accidental IPA Version: 0\nStyle: American IPA\nBatch Size: 11 Boil Time: 90"))
 		})
 		It("finds multiple recipes", func() {
 			args := make([]string, 1)
