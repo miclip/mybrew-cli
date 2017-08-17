@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/miclip/mybrewgo/fakes"
+	"github.com/miclip/mybrewgo/recipe"
 	"github.com/miclip/mybrewgo/ui"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -23,6 +24,8 @@ var _ = Describe("Add", func() {
 			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
 			ui = fakes.NewFakeUI(bOut, bErr)
+			r := recipe.NewRecipes(ui)
+			r.DeleteRecipes()
 		})
 		It("fails when path argument not valid", func() {
 			path = "../invalid/error.json"

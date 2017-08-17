@@ -3,6 +3,7 @@ package recipe
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -47,6 +48,15 @@ func (r *Recipes) SaveRecipes() error {
 		return err
 	}
 	err = ioutil.WriteFile(r.recipeFilepath(), data, 0644)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteRecipes deletes the local repository
+func (r *Recipes) DeleteRecipes() error {
+	var err = os.Remove(r.recipeFilepath())
 	if err != nil {
 		return err
 	}
