@@ -63,7 +63,6 @@ func Create(ui ui.UI) *Recipe {
 // OpenRecipe ...
 func OpenRecipe(fileName string) (recipe *Recipe, err error) {
 	filePath, _ := filepath.Abs(fileName)
-	color.White("Reading recipe file %v", filePath)
 	data, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file with: %v", err)
