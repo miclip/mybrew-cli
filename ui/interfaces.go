@@ -4,7 +4,7 @@ package ui
 type UI interface {
 	AskForText(label string) string
 	AskForFloat(label string) float64
-	AskForInt(label string) int
+	AskForInt(label string) (int, error)
 
 	PrintLinef(pattern string, args ...interface{})
 	SystemLinef(pattern string, args ...interface{})
@@ -15,4 +15,6 @@ type UI interface {
 	Errorf(pattern string, args ...interface{})
 
 	DisplayColumns(items []string, columns int)
+
+	SetMaxInvalidInput(value int)
 }

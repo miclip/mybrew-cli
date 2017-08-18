@@ -14,13 +14,15 @@ var _ = Describe("FakeUi", func() {
 		var (
 			bOut *gbytes.Buffer
 			bErr *gbytes.Buffer
+			bIn  *gbytes.Buffer
 		)
 		BeforeEach(func() {
-			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
+			bOut, bErr, bIn = gbytes.NewBuffer(), gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
+			_ = gbytes.TimeoutReader(bOut, time.Second)
 		})
 		It("Creates a fake ui", func() {
-			ui := fakes.NewFakeUI(bOut, bErr)
+			ui := fakes.NewFakeUI(bOut, bErr, bIn)
 			Ω(ui).ShouldNot(BeNil())
 		})
 	})

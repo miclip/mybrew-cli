@@ -7,6 +7,6 @@ import (
 )
 
 // NewFakeUI returns a fake UI
-func NewFakeUI(outWriter, errWriter io.Writer) *ui.WriterUI {
-	return ui.NewWriterUI(outWriter, errWriter)
+func NewFakeUI(outWriter, errWriter io.Writer, inReader io.Reader) *ui.WriterUI {
+	return ui.NewWriterUI(outWriter, errWriter, inReader)
 }

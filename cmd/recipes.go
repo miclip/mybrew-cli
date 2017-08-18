@@ -43,7 +43,7 @@ func handleRecipes(args []string, ui ui.UI) {
 	names := recipes.GetRecipeNames()
 	ui.SystemLinef("Recipes:")
 	ui.DisplayColumns(names, 3)
-	s := ui.AskForInt("Select a recipe:")
+	s, _ := ui.AskForInt("Select a recipe:")
 	r := recipes.Recipes[names[s]]
 	r.Print(ui)
 }

@@ -7,14 +7,15 @@ import (
 	"github.com/fatih/color"
 )
 
-const (
-	maxInvalidInput = 3
+var (
+	MaxInvalidInput = 3
 )
 
 //WriterUI Writer UI type
 type WriterUI struct {
 	outWriter    io.Writer
 	errWriter    io.Writer
+	inReader     io.Reader
 	errColor     *color.Color
 	systemColor  *color.Color
 	contentColor *color.Color
@@ -22,14 +23,15 @@ type WriterUI struct {
 
 // NewConsoleUI creates an instance of the WriterUI
 func NewConsoleUI() *WriterUI {
-	return NewWriterUI(os.Stdout, os.Stderr)
+	return NewWriterUI(os.Stdout, os.Stderr, os.Stdin)
 }
 
 // NewWriterUI creates a UI instance
-func NewWriterUI(outWriter, errWriter io.Writer) *WriterUI {
+func NewWriterUI(outWriter, errWriter io.Writer, inReader io.Reader) *WriterUI {
 	return &WriterUI{
 		outWriter:    outWriter,
 		errWriter:    errWriter,
+		inReader:     inReader,
 		errColor:     color.New(color.FgRed),
 		systemColor:  color.New(color.FgWhite),
 		contentColor: color.New(color.FgGreen),
@@ -64,6 +66,10 @@ func (w *WriterUI) ErrorLinef(pattern string, args ...interface{}) {
 // Errorf requests input via stdin from the user
 func (w *WriterUI) Errorf(pattern string, args ...interface{}) {
 	w.errColor.Fprintf(w.errWriter, pattern, args...)
+}
+
+func (w *WriterUI) SetMaxInvalidInput(value int) {
+	MaxInvalidInput = value
 }
 
 // DisplayColumns prints to stdout the items by columns

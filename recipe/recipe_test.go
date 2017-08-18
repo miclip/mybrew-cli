@@ -259,7 +259,7 @@ INVALID`
 		BeforeEach(func() {
 			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
-			ui = fakes.NewFakeUI(bOut, bErr)
+			ui = fakes.NewFakeUI(bOut, bErr, nil)
 		})
 		It("Prints a recipe", func() {
 			r := Recipe{
