@@ -52,7 +52,7 @@ func handleSearch(args []string, ui ui.UI) {
 	}
 	ui.SystemLinef("Search results for '%s', %d recipes found:", findName, len(matches))
 	ui.DisplayColumns(matches, 3)
-	i := ui.AskForInt("Please select a result:")
+	i, _ := ui.AskForInt("Please select a result:")
 	r := recipes.FindByKey(matches[i], 0)
 	r.Print(ui)
 }

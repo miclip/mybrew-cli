@@ -29,12 +29,14 @@ var _ = Describe("UI", func() {
 		var (
 			bOut *gbytes.Buffer
 			bErr *gbytes.Buffer
+			bIn  *gbytes.Buffer
 			ui   ui.UI
 		)
 		BeforeEach(func() {
 			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
-			ui = fakes.NewFakeUI(bOut, bErr)
+			_ = gbytes.TimeoutReader(bIn, time.Second)
+			ui = fakes.NewFakeUI(bOut, bErr, bIn)
 		})
 		It("SystemLinef", func() {
 			Ω(ui).ShouldNot(BeNil())

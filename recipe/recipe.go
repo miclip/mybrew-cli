@@ -40,7 +40,7 @@ type Recipe struct {
 func Create(ui ui.UI) *Recipe {
 	recipe := &Recipe{}
 	recipe.Name = ui.AskForText("Recipe Name:")
-	recipe.Version = ui.AskForInt("Version Number:")
+	recipe.Version, _ = ui.AskForInt("Version Number:")
 	recipe.Batch = ui.AskForFloat("Batch Size:")
 	recipe.BoilTime = ui.AskForFloat("Boil Time:")
 	recipe.Efficiency = ui.AskForFloat("Efficiency:")
