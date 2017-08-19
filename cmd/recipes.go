@@ -43,7 +43,11 @@ func handleRecipes(args []string, ui ui.UI) {
 	names := recipes.GetRecipeNames()
 	ui.SystemLinef("Recipes:")
 	ui.DisplayColumns(names, 3)
-	s, _ := ui.AskForInt("Select a recipe:")
+	s, err := ui.AskForInt("Select a recipe:")
+	if err != nil {
+		ui.ErrorLinef("Max invalid value failures reached.")
+		return
+	}
 	r := recipes.Recipes[names[s]]
 	r.Print(ui)
 }

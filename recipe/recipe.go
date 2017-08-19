@@ -41,9 +41,9 @@ func Create(ui ui.UI) *Recipe {
 	recipe := &Recipe{}
 	recipe.Name = ui.AskForText("Recipe Name:")
 	recipe.Version, _ = ui.AskForInt("Version Number:")
-	recipe.Batch = ui.AskForFloat("Batch Size:")
-	recipe.BoilTime = ui.AskForFloat("Boil Time:")
-	recipe.Efficiency = ui.AskForFloat("Efficiency:")
+	recipe.Batch, _ = ui.AskForFloat("Batch Size:")
+	recipe.BoilTime, _ = ui.AskForFloat("Boil Time:")
+	recipe.Efficiency, _ = ui.AskForFloat("Efficiency:")
 	recipe.Method = ui.AskForText("Method:")
 	recipe.Style = ui.AskForText("Style:")
 	color.White("Ingredients...")
