@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	MaxInvalidInput = 3
+	maxInvalidInput = 3
 )
 
 //WriterUI Writer UI type
@@ -68,8 +68,9 @@ func (w *WriterUI) Errorf(pattern string, args ...interface{}) {
 	w.errColor.Fprintf(w.errWriter, pattern, args...)
 }
 
+// SetMaxInvalidInput overrides the max invalid input variable
 func (w *WriterUI) SetMaxInvalidInput(value int) {
-	MaxInvalidInput = value
+	maxInvalidInput = value
 }
 
 // DisplayColumns prints to stdout the items by columns

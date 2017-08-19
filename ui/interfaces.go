@@ -3,7 +3,7 @@ package ui
 // UI ...
 type UI interface {
 	AskForText(label string) string
-	AskForFloat(label string) float64
+	AskForFloat(label string) (float64, error)
 	AskForInt(label string) (int, error)
 
 	PrintLinef(pattern string, args ...interface{})
