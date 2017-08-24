@@ -31,6 +31,11 @@ var _ = Describe("Askfor", func() {
 			Ω(bOut).To(gbytes.Say("Please type test:"))
 			Ω(s).Should(Equal("testing"))
 		})
+		It("AskForText should return error if theres an invalid value", func() {
+			bIn.Write([]byte(nil))
+			_, err := ui.AskForText("Please type test:")
+			Ω(err).ShouldNot(Succeed())
+		})
 		It("two calls to AskForText should return the text values", func() {
 			bIn.Write([]byte("testing1\ntesting2\n"))
 			s, err := ui.AskForText("Please type test 1:")
