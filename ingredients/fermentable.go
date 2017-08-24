@@ -45,7 +45,7 @@ func (f *Fermentable) Print(ui ui.UI) {
 		utils.Round(f.Yield, .5, 1), utils.Round(f.Potential, .5, 3), utils.Round(f.Lovibond, .5, 1), f.Type)
 }
 
-// CreateFermentableInteractively ...
+// CreateFermentableInteractively adds a fermentable via the cli
 func CreateFermentableInteractively(ui ui.UI) (*Fermentable, error) {
 	f := &Fermentable{}
 	name, err := ui.AskForText("Fermentable Name:")

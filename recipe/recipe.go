@@ -83,12 +83,26 @@ func CreateInteractively(ui ui.UI) (*Recipe, error) {
 		if strings.ToLower(i) != "f" && strings.ToLower(i) != "h" && strings.ToLower(i) != "y" {
 			ui.ErrorLinef("Invalid Ingredient, must be either h, f, y or s")
 		}
-		if i == "f" {
+		if strings.ToLower(i) == "f" {
 			if recipe.Fermentables == nil {
 				recipe.Fermentables = []ingredients.Fermentable{}
 			}
 			f, _ := ingredients.CreateFermentableInteractively(ui)
 			recipe.Fermentables = append(recipe.Fermentables, *f)
+		}
+		if strings.ToLower(i) == "h" {
+			if recipe.Hops == nil {
+				recipe.Hops = []ingredients.Hop{}
+			}
+			h, _ := ingredients.CreateHopInteractively(ui)
+			recipe.Hops = append(recipe.Hops, *h)
+		}
+		if strings.ToLower(i) == "y" {
+			if recipe.Yeasts == nil {
+				recipe.Yeasts = []ingredients.Yeast{}
+			}
+			y, _ := ingredients.CreateYeastInteractively(ui)
+			recipe.Yeasts = append(recipe.Yeasts, *y)
 		}
 	}
 	return recipe, nil

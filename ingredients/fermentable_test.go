@@ -47,7 +47,6 @@ var _ = Describe("Fermentable", func() {
 			_ = gbytes.TimeoutReader(bIn, time.Second)
 			ui = fakes.NewFakeUI(bOut, bErr, bIn)
 		})
-
 		It("Prints a fermentable", func() {
 			f := Fermentable{
 				Name:      "2 Row",
@@ -73,6 +72,54 @@ var _ = Describe("Fermentable", func() {
 			Ω(fermentable.Yield).Should(Equal(77.9))
 			Ω(fermentable.Lovibond).Should(Equal(2.0))
 			Ω(fermentable.Type).Should(Equal("Grain"))
+		})
+		It("unsuccessfully creates a fermentable interactively due to invalid name", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte(nil))
+			fermentable, err := CreateFermentableInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Error reading input."))
+			Ω(fermentable).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a fermentable interactively due to invalid amount", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Fermentable\nxx\n1.036\n77.9\n2\nGrain\n"))
+			fermentable, err := CreateFermentableInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid float, please enter a valid value."))
+			Ω(fermentable).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a fermentable interactively due to invalid potential", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Fermentable\n12.0\nxx\n77.9\n2\nGrain\n"))
+			fermentable, err := CreateFermentableInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid float, please enter a valid value."))
+			Ω(fermentable).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a fermentable interactively due to invalid yield", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Fermentable\n12.0\n1.036\nxx\n2\nGrain\n"))
+			fermentable, err := CreateFermentableInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid float, please enter a valid value."))
+			Ω(fermentable).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a fermentable interactively due to invalid lovibond", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Fermentable\n12.0\n1.036\n77.9\nxx\nGrain\n"))
+			fermentable, err := CreateFermentableInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid float, please enter a valid value."))
+			Ω(fermentable).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a fermentable interactively due to invalid type", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Fermentable\n12.0\n1.036\n77.9\n2\n"))
+			fermentable, err := CreateFermentableInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Error reading input."))
+			Ω(fermentable).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
 		})
 	})
 })
