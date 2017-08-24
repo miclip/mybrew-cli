@@ -60,10 +60,10 @@ func handleAdd(args []string, ui ui.UI) {
 
 	r, _ := recipe.CreateInteractively(ui)
 	recipes.AddRecipe(r)
-	// err := recipes.SaveRecipes()
-	// if err != nil {
-	// 	color.Red("Error saving recipe store with %v", err)
-	// }
+	err := recipes.SaveRecipes()
+	if err != nil {
+		ui.ErrorLinef("Error saving recipe store with %v", err)
+	}
 	r.Print(ui)
 }
 

@@ -56,13 +56,25 @@ Safale American Attenuation: 77
 
 Note: Recipe will be added to a local YAML file name `mybrewgo_recipes.yml`
 
+Add a recipe interactively via the user interface:
+
+```sh
+mybrewgo recipes add
+
+Adding Recipe...
+Recipe Name:
+```
+The command line interface will prompt for each property of a recipe and then
+the ingredients. It will save the recipe into the local repository and display the
+the recipe details and calculated values.
+
 #### List Recipes
 List all the recipes in the local repository
 
 ```sh
 mybrewgo recipes
 Recipes:
-0. Accidental IPA\\0	1. Czech Pilsner\\0	2. Dry Irish Stout\\0
+0. Accidental IPA\0	1. Czech Pilsner\0	2. Dry Irish Stout\0
 
 Select a recipe: 0
 
