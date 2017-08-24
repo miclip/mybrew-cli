@@ -38,7 +38,7 @@ var addCmd = &cobra.Command{
 
 func handleAdd(args []string, ui ui.UI) {
 	recipes := recipe.NewRecipes(ui)
-	ui.SystemLinef("Adding Recipe...")
+	ui.SystemLinef("Add Recipe...")
 	if path != "" {
 		r, err := recipe.OpenRecipe(path)
 		if err != nil {
@@ -57,7 +57,7 @@ func handleAdd(args []string, ui ui.UI) {
 		r.Print(ui)
 		return
 	}
-
+	ui.SystemLinef("Interactive mode...")
 	r, _ := recipe.CreateInteractively(ui)
 	recipes.AddRecipe(r)
 	err := recipes.SaveRecipes()

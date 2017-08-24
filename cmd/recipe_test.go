@@ -40,7 +40,7 @@ var _ = Describe("Recipe Cmd", func() {
 			name = "Accidental IPA"
 			version = 0
 			handleRecipe(nil, ui)
-			Ω(bOut).To(gbytes.Say("Adding Recipe...\nRecipe: Accidental IPA Version: 0\nStyle: American IPA\nBatch Size: 11 Boil Time: 90\nOG: 1.07 FG: 1.016 IBU: 37.8 ABV: 7.1 SRM: 9.4\n"))
+			Ω(bOut).To(gbytes.Say("Add Recipe...\nRecipe: Accidental IPA Version: 0\nStyle: American IPA\nBatch Size: 11 Boil Time: 90\nOG: 1.07 FG: 1.016 IBU: 37.8 ABV: 7.1 SRM: 9.4\n"))
 		})
 		It("fails when a name/version cannot be found", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")

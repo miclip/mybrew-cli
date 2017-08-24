@@ -48,7 +48,7 @@ var _ = Describe("Search Cmd", func() {
 			path, err = filepath.Abs("../test_data/accidental-ipa.yml")
 			Ω(err).Should(Succeed())
 			handleAdd(nil, ui)
-			Ω(bOut).To(gbytes.Say("Adding Recipe...\n"))
+			Ω(bOut).To(gbytes.Say("Add Recipe...\n"))
 			args[0] = "acc"
 			handleSearch(args, ui)
 			Ω(bOut).To(gbytes.Say("One recipe found, displaying recipe:\nRecipe: Accidental IPA Version: 0\nStyle: American IPA\nBatch Size: 11 Boil Time: 90"))
