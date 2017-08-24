@@ -1,6 +1,8 @@
 package ingredients
 
 import (
+	"fmt"
+
 	"github.com/miclip/mybrewgo/ui"
 	"github.com/miclip/mybrewgo/utils"
 )
@@ -41,4 +43,40 @@ func (f *Fermentable) ColorMCU() float64 {
 func (f *Fermentable) Print(ui ui.UI) {
 	ui.PrintLinef("%s Amount: %v Yield: %v Potential: %v Lovibond: %v Type: %s", f.Name, utils.Round(f.Amount, .5, 1),
 		utils.Round(f.Yield, .5, 1), utils.Round(f.Potential, .5, 3), utils.Round(f.Lovibond, .5, 1), f.Type)
+}
+
+// CreateFermentableInteractively adds a fermentable via the cli
+func CreateFermentableInteractively(ui ui.UI) (*Fermentable, error) {
+	f := &Fermentable{}
+	name, err := ui.AskForText("Fermentable Name:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid fermentable name with: %v", err)
+	}
+	f.Name = name
+	amount, err := ui.AskForFloat("Amount (pounds):")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid fermentable amount with: %v", err)
+	}
+	f.Amount = amount
+	potential, err := ui.AskForFloat("Potential:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid fermentable potential with: %v", err)
+	}
+	f.Potential = potential
+	yield, err := ui.AskForFloat("Yield:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid fermentable yield with: %v", err)
+	}
+	f.Yield = yield
+	lovibond, err := ui.AskForFloat("Lovibond:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid fermentable lovibond with: %v", err)
+	}
+	f.Lovibond = lovibond
+	fermentableType, err := ui.AskForText("Fermentable Type:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid fermentable type with: %v", err)
+	}
+	f.Type = fermentableType
+	return f, nil
 }
