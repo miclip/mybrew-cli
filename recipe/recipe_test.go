@@ -254,12 +254,19 @@ INVALID`
 		var (
 			bOut *gbytes.Buffer
 			bErr *gbytes.Buffer
+			bIn  *gbytes.Buffer
 			ui   ui.UI
+			r    Recipes
 		)
 		BeforeEach(func() {
-			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
-			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
-			ui = fakes.NewFakeUI(bOut, bErr, nil)
+			bOut, bErr, bIn = gbytes.NewBuffer(), gbytes.NewBuffer(), gbytes.NewBuffer()
+			_, _ = gbytes.TimeoutWriter(bOut, time.Second*2), gbytes.TimeoutWriter(bErr, time.Second)
+			_ = gbytes.TimeoutReader(bIn, time.Second)
+			ui = fakes.NewFakeUI(bOut, bErr, bIn)
+			r = NewRecipes(ui)
+		})
+		AfterEach(func() {
+			r.DeleteRecipes()
 		})
 		It("Prints a recipe", func() {
 			r := Recipe{
@@ -360,6 +367,28 @@ INVALID`
 
 			r.Print(ui)
 			Ω(bOut).To(gbytes.Say("Recipe: Accidental IPA Version: 0\nStyle: India Pale Ale\nBatch Size: 11 Boil Time: 90\nOG: 1.07 FG: 1.016 IBU: 37.8 ABV: 7.1 SRM: 9.4\nFermentables: \n2 Row Amount: 23.4 Yield: 77.9 Potential: 1.036 Lovibond: 2 Type: Grain\nVienna Malt Amount: 1.6 Yield: 77.9 Potential: 1.036 Lovibond: 4 Type: Grain\nWhite Wheat Amount: 1 Yield: 86.7 Potential: 1.04 Lovibond: 2 Type: Grain\nHops: \nGalaxy Amount: 1.25 Time: 60 Alpha: 13 Form: Pellet Method: Boil\nCentennial Amount: 1 Time: 10 Alpha: 9.9 Form: Pellet Method: Boil\nCascade Amount: 1 Time: 10 Alpha: 6.7 Form: Pellet Method: Boil\nCentennial Amount: 1 Time: 0 Alpha: 9.9 Form: Pellet Method: Boil\nCascade Amount: 1 Time: 0 Alpha: 6.7 Form: Pellet Method: Boil\nCitra Amount: 1 Time: 0 Alpha: 12 Form: Pellet Method: Dry Hop\nGalaxy Amount: 1 Time: 0 Alpha: 13 Form: Pellet Method: Dry Hop\nYeasts: \nSafale American Attenuation: 77"))
+		})
+		It("creates a new recipe interactively", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Name\n1\n11.0\n61.5\n71.0\nAll Grain\nTest Style\nf\nTest Fermentable\n12.0\n1.036\n77.9\n2\nGrain\ns\n"))
+			recipe, err := CreateInteractively(ui)
+			Ω(bErr).ToNot(gbytes.Say("Error reading input."))
+			Ω(recipe).ShouldNot(BeNil())
+			Ω(err).Should(Succeed())
+			Ω(recipe.Name).Should(Equal("Test Name"))
+			Ω(recipe.Version).Should(Equal(1))
+			Ω(recipe.Batch).Should(Equal(11.0))
+			Ω(recipe.BoilTime).Should(Equal(61.5))
+			Ω(recipe.Efficiency).Should(Equal(71.0))
+			Ω(recipe.Method).Should(Equal("All Grain"))
+			Ω(recipe.Style).Should(Equal("Test Style"))
+			Ω(len(recipe.Fermentables)).Should(Equal(1))
+			Ω(recipe.Fermentables[0].Name).Should(Equal("Test Fermentable"))
+			Ω(recipe.Fermentables[0].Amount).Should(Equal(12.0))
+			Ω(recipe.Fermentables[0].Potential).Should(Equal(1.036))
+			Ω(recipe.Fermentables[0].Yield).Should(Equal(77.9))
+			Ω(recipe.Fermentables[0].Lovibond).Should(Equal(2.0))
+			Ω(recipe.Fermentables[0].Type).Should(Equal("Grain"))
 		})
 	})
 })

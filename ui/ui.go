@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"bufio"
 	"io"
 	"os"
 
@@ -15,7 +16,7 @@ var (
 type WriterUI struct {
 	outWriter    io.Writer
 	errWriter    io.Writer
-	inReader     io.Reader
+	inReader     *bufio.Reader
 	errColor     *color.Color
 	systemColor  *color.Color
 	contentColor *color.Color
@@ -31,7 +32,7 @@ func NewWriterUI(outWriter, errWriter io.Writer, inReader io.Reader) *WriterUI {
 	return &WriterUI{
 		outWriter:    outWriter,
 		errWriter:    errWriter,
-		inReader:     inReader,
+		inReader:     bufio.NewReader(inReader),
 		errColor:     color.New(color.FgRed),
 		systemColor:  color.New(color.FgWhite),
 		contentColor: color.New(color.FgGreen),

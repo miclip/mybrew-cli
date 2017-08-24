@@ -26,9 +26,21 @@ var _ = Describe("Askfor", func() {
 		})
 		It("AskForText should return the text value", func() {
 			bIn.Write([]byte("testing\n"))
-			s := ui.AskForText("Please type test:")
+			s, err := ui.AskForText("Please type test:")
+			Ω(err).Should(Succeed())
 			Ω(bOut).To(gbytes.Say("Please type test:"))
 			Ω(s).Should(Equal("testing"))
+		})
+		It("two calls to AskForText should return the text values", func() {
+			bIn.Write([]byte("testing1\ntesting2\n"))
+			s, err := ui.AskForText("Please type test 1:")
+			Ω(err).Should(Succeed())
+			Ω(bOut).To(gbytes.Say("Please type test 1:"))
+			Ω(s).Should(Equal("testing1"))
+			s, err = ui.AskForText("Please type test 2:")
+			Ω(err).Should(Succeed())
+			Ω(bOut).To(gbytes.Say("Please type test 2:"))
+			Ω(s).Should(Equal("testing2"))
 		})
 		It("AskForInt should return the int value", func() {
 			bIn.Write([]byte("12\n"))

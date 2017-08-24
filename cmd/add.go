@@ -58,7 +58,7 @@ func handleAdd(args []string, ui ui.UI) {
 		return
 	}
 
-	r := recipe.Create(ui)
+	r, _ := recipe.CreateInteractively(ui)
 	recipes.AddRecipe(r)
 	// err := recipes.SaveRecipes()
 	// if err != nil {
