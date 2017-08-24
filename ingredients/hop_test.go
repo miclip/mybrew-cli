@@ -44,12 +44,14 @@ var _ = Describe("Hop", func() {
 		var (
 			bOut *gbytes.Buffer
 			bErr *gbytes.Buffer
+			bIn  *gbytes.Buffer
 			ui   ui.UI
 		)
 		BeforeEach(func() {
-			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
-			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
-			ui = fakes.NewFakeUI(bOut, bErr, nil)
+			bOut, bErr, bIn = gbytes.NewBuffer(), gbytes.NewBuffer(), gbytes.NewBuffer()
+			_, _ = gbytes.TimeoutWriter(bOut, time.Second*2), gbytes.TimeoutWriter(bErr, time.Second)
+			_ = gbytes.TimeoutReader(bIn, time.Second)
+			ui = fakes.NewFakeUI(bOut, bErr, bIn)
 		})
 		It("Prints a Hop", func() {
 			h := Hop{
@@ -62,6 +64,68 @@ var _ = Describe("Hop", func() {
 			}
 			h.Print(ui)
 			Ω(bOut).To(gbytes.Say("Galaxy Amount: 1.25 Time: 12 Alpha: 13 Form: Pellet Method: Dry Hop"))
+		})
+		It("successfully creates a hop interactively", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Hop\n1.25\n12\n35\nPellet\nBoil\n"))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).ToNot(gbytes.Say("Error reading input."))
+			Ω(hop).ShouldNot(BeNil())
+			Ω(err).Should(Succeed())
+			Ω(hop.Name).Should(Equal("Test Hop"))
+			Ω(hop.Amount).Should(Equal(1.25))
+			Ω(hop.Alpha).Should(Equal(12.0))
+			Ω(hop.AdditionTime).Should(Equal(35))
+			Ω(hop.Form).Should(Equal("Pellet"))
+			Ω(hop.Method).Should(Equal("Boil"))
+		})
+		It("unsuccessfully creates a hop interactively due to invalid name", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte(nil))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Error reading input."))
+			Ω(hop).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a hop interactively due to invalid amount", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Hop\nxx\n12\n35\nPellet\nBoil\n"))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid float, please enter a valid value."))
+			Ω(hop).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a hop interactively due to invalid alpha", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Hop\n1.25\nxx\n35\nPellet\nBoil\n"))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid float, please enter a valid value."))
+			Ω(hop).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a hop interactively due to invalid addition time", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Hop\n1.25\n12\nxx\nPellet\nBoil\n"))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Invalid int, please enter a valid value."))
+			Ω(hop).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a hop interactively due to invalid type", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Hop\n1.25\n12\n35\n"))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Error reading input."))
+			Ω(hop).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
+		})
+		It("unsuccessfully creates a hop interactively due to invalid method", func() {
+			ui.SetMaxInvalidInput(1)
+			bIn.Write([]byte("Test Hop\n1.25\n12\n35\nPellet\n"))
+			hop, err := CreateHopInteractively(ui)
+			Ω(bErr).To(gbytes.Say("Error reading input."))
+			Ω(hop).Should(BeNil())
+			Ω(err).ShouldNot(Succeed())
 		})
 	})
 })

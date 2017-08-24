@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/fatih/color"
 	"github.com/miclip/mybrewgo/hoputils"
 	"github.com/miclip/mybrewgo/ingredients"
 	"github.com/miclip/mybrewgo/ui"
@@ -36,28 +35,77 @@ type Recipe struct {
 	Yeasts       []ingredients.Yeast
 }
 
-// Create adds a recipe via the cli
-func Create(ui ui.UI) *Recipe {
+// CreateInteractively adds a recipe via the cli
+func CreateInteractively(ui ui.UI) (*Recipe, error) {
 	recipe := &Recipe{}
-	recipe.Name = ui.AskForText("Recipe Name:")
-	recipe.Version, _ = ui.AskForInt("Version Number:")
-	recipe.Batch, _ = ui.AskForFloat("Batch Size:")
-	recipe.BoilTime, _ = ui.AskForFloat("Boil Time:")
-	recipe.Efficiency, _ = ui.AskForFloat("Efficiency:")
-	recipe.Method = ui.AskForText("Method:")
-	recipe.Style = ui.AskForText("Style:")
-	color.White("Ingredients...")
+	name, err := ui.AskForText("Recipe Name:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe name with: %v", err)
+	}
+	recipe.Name = name
+	version, err := ui.AskForInt("Version Number:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe version with: %v", err)
+	}
+	recipe.Version = version
+	batch, err := ui.AskForFloat("Batch Size:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe batch with: %v", err)
+	}
+	recipe.Batch = batch
+	boilTime, err := ui.AskForFloat("Boil Time:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe boil time with: %v", err)
+	}
+	recipe.BoilTime = boilTime
+	efficiency, err := ui.AskForFloat("Efficiency:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe efficiency with: %v", err)
+	}
+	recipe.Efficiency = efficiency
+	method, err := ui.AskForText("Method:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe brewing method with: %v", err)
+	}
+	recipe.Method = method
+	style, err := ui.AskForText("Style:")
+	if err != nil {
+		return nil, fmt.Errorf("Invalid recipe style with: %v", err)
+	}
+	recipe.Style = style
+	ui.SystemLinef("Ingredients...")
 	addIngedients := true
 	for addIngedients {
-		i := ui.AskForText("Add Ingredient, Fermentable (f), Hop (h), Yeast (y), Save/Exit (s):")
+		i, _ := ui.AskForText("Add Ingredient, Fermentable (f), Hop (h), Yeast (y), Save & Exit (s):")
 		if i == "s" {
 			break
 		}
 		if strings.ToLower(i) != "f" && strings.ToLower(i) != "h" && strings.ToLower(i) != "y" {
-			color.Red("Invalid Ingredient, must be either h,f,y or s")
+			ui.ErrorLinef("Invalid Ingredient, must be either h, f, y or s")
+		}
+		if strings.ToLower(i) == "f" {
+			if recipe.Fermentables == nil {
+				recipe.Fermentables = []ingredients.Fermentable{}
+			}
+			f, _ := ingredients.CreateFermentableInteractively(ui)
+			recipe.Fermentables = append(recipe.Fermentables, *f)
+		}
+		if strings.ToLower(i) == "h" {
+			if recipe.Hops == nil {
+				recipe.Hops = []ingredients.Hop{}
+			}
+			h, _ := ingredients.CreateHopInteractively(ui)
+			recipe.Hops = append(recipe.Hops, *h)
+		}
+		if strings.ToLower(i) == "y" {
+			if recipe.Yeasts == nil {
+				recipe.Yeasts = []ingredients.Yeast{}
+			}
+			y, _ := ingredients.CreateYeastInteractively(ui)
+			recipe.Yeasts = append(recipe.Yeasts, *y)
 		}
 	}
-	return recipe
+	return recipe, nil
 }
 
 // OpenRecipe ...

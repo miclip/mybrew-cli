@@ -2,7 +2,7 @@ package ui
 
 // UI ...
 type UI interface {
-	AskForText(label string) string
+	AskForText(label string) (string, error)
 	AskForFloat(label string) (float64, error)
 	AskForInt(label string) (int, error)
 
