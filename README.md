@@ -158,7 +158,7 @@ Pilsner Lager Yeast Attenuation: 72
 - [x] Display basic recipe details
 - [x] Find recipes
 - [x] List recipes in local store
-- [ ] Add recipe via cli
+- [x] Add recipe via cli
 - [ ] Modify recipes via cli
 - [ ] Mashing calculations
 - [ ] Scaling recipes
