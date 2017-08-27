@@ -19,3 +19,6 @@
 coverage.tmp
 coverage.out
 /coverage.txt
+
+_vendor-*
+/vendor
