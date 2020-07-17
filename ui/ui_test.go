@@ -14,10 +14,9 @@ var _ = Describe("UI", func() {
 	Context("Console UI", func() {
 		var (
 			bOut *gbytes.Buffer
-			bErr *gbytes.Buffer
 		)
 		BeforeEach(func() {
-			bOut, bErr = gbytes.NewBuffer(), gbytes.NewBuffer()
+			bOut, _ = gbytes.NewBuffer(), gbytes.NewBuffer()
 			_, _ = gbytes.TimeoutWriter(bOut, time.Second), gbytes.TimeoutWriter(bOut, time.Second)
 		})
 		It("Creates a console ui", func() {
