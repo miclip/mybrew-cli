@@ -1,4 +1,4 @@
-module github.com/miclip/mybrewgo
+module github.com/miclip/mybrew
 
 go 1.13
 
@@ -12,6 +12,7 @@ require (
 	github.com/magiconair/properties v1.7.3 // indirect
 	github.com/mattn/go-colorable v0.0.9 // indirect
 	github.com/mattn/go-isatty v0.0.2 // indirect
+	github.com/miclip/mybrewgo v0.0.0-20200717185912-479f5f5f84f4
 	github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747
 	github.com/mitchellh/mapstructure v0.0.0-20170523030023-d0303fe80992 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect

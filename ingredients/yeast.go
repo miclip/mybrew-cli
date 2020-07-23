@@ -3,8 +3,8 @@ package ingredients
 import (
 	"fmt"
 
-	"github.com/miclip/mybrewgo/ui"
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrew/ui"
+	"github.com/miclip/mybrew/utils"
 )
 
 // Yeast ...

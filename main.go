@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/miclip/mybrewgo/cmd"
+	"github.com/miclip/mybrew/cmd"
 )
 
 func main() {

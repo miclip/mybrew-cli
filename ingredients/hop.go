@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/miclip/mybrewgo/hoputils"
-	"github.com/miclip/mybrewgo/ui"
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrew/hoputils"
+	"github.com/miclip/mybrew/ui"
+	"github.com/miclip/mybrew/utils"
 )
 
 // Hop represents a single hop addition to a batch

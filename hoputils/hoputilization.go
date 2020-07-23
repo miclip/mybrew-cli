@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrew/utils"
 )
 
 var (

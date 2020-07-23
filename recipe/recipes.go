@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/miclip/mybrewgo/ui"
+	"github.com/miclip/mybrew/ui"
 
 	yaml "gopkg.in/yaml.v2"
 )

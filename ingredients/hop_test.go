@@ -3,11 +3,11 @@ package ingredients_test
 import (
 	"time"
 
-	"github.com/miclip/mybrewgo/fakes"
-	"github.com/miclip/mybrewgo/hoputils"
-	. "github.com/miclip/mybrewgo/ingredients"
-	"github.com/miclip/mybrewgo/ui"
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrew/fakes"
+	"github.com/miclip/mybrew/hoputils"
+	. "github.com/miclip/mybrew/ingredients"
+	"github.com/miclip/mybrew/ui"
+	"github.com/miclip/mybrew/utils"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"

@@ -3,7 +3,7 @@ package fakes_test
 import (
 	"time"
 
-	"github.com/miclip/mybrewgo/fakes"
+	"github.com/miclip/mybrew/fakes"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"

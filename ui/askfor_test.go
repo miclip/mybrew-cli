@@ -3,8 +3,8 @@ package ui_test
 import (
 	"time"
 
-	"github.com/miclip/mybrewgo/fakes"
-	"github.com/miclip/mybrewgo/ui"
+	"github.com/miclip/mybrew/fakes"
+	"github.com/miclip/mybrew/ui"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"github.com/onsi/gomega/gbytes"

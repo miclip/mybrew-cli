@@ -29,6 +29,8 @@ github.com/mattn/go-colorable v0.0.9 h1:UVL0vNpWh04HeJXV0KLcaT7r06gOH2l4OW6ddYRU
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
 github.com/mattn/go-isatty v0.0.2 h1:F+DnWktyadxnOrohKLNUC9/GjFii5RJgY4GFG6ilggw=
 github.com/mattn/go-isatty v0.0.2/go.mod h1:M+lRXTBqGeGNdLjl/ufCoiOlB5xdOkqRJdNxMWT7Zi4=
+github.com/miclip/mybrewgo v0.0.0-20200717185912-479f5f5f84f4 h1:XhXB0Z+ABHUBYNsXggNAC8iflSpBYRVk4Y5UP2O1fXA=
+github.com/miclip/mybrewgo v0.0.0-20200717185912-479f5f5f84f4/go.mod h1:zjzITawFk8uWA3r5tUJMl/LlvTYLPlZCsSq4KoG+lAk=
 github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747 h1:eQox4Rh4ewJF+mqYPxCkmBAirRnPaHEB26UkNuPyjlk=
 github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/mitchellh/mapstructure v0.0.0-20170523030023-d0303fe80992 h1:W7VHAEVflA5/eTyRvQ53Lz5j8bhRd1myHZlI/IZFvbU=

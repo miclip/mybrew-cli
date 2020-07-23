@@ -1,7 +1,7 @@
 package utils_test
 
 import (
-	. "github.com/miclip/mybrewgo/utils"
+	. "github.com/miclip/mybrew/utils"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

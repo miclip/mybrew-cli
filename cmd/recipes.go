@@ -15,8 +15,8 @@
 package cmd
 
 import (
-	"github.com/miclip/mybrewgo/recipe"
-	"github.com/miclip/mybrewgo/ui"
+	"github.com/miclip/mybrew/recipe"
+	"github.com/miclip/mybrew/ui"
 	"github.com/spf13/cobra"
 )
 

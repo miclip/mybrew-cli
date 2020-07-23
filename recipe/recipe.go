@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/miclip/mybrewgo/hoputils"
-	"github.com/miclip/mybrewgo/ingredients"
-	"github.com/miclip/mybrewgo/ui"
-	"github.com/miclip/mybrewgo/utils"
+	"github.com/miclip/mybrew/hoputils"
+	"github.com/miclip/mybrew/ingredients"
+	"github.com/miclip/mybrew/ui"
+	"github.com/miclip/mybrew/utils"
 
 	yaml "gopkg.in/yaml.v2"
 )

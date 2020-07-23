@@ -1,7 +1,7 @@
 package recipe_test
 
 import (
-	. "github.com/miclip/mybrewgo/recipe"
+	. "github.com/miclip/mybrew/recipe"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

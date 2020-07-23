@@ -13,7 +13,7 @@ var cfgFile, projectBase, userLicense string
 
 // RootCmd ...
 var RootCmd = &cobra.Command{
-	Use:   "mybrewgo",
+	Use:   "mybrew",
 	Short: "MyBrewGo is a very fast command line interface for managing homebrew recipes.",
 	Long: `MyBrewGo is a very fast command line interface for managing homebrew recipes. MyBrewGo
 	supports recipes in either YAML, JSON, XML and can be added directly via the cli.
@@ -28,7 +28,7 @@ var RootCmd = &cobra.Command{
 func init() {
 	cobra.OnInitialize(initConfig)
 	RootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.cobra.yaml)")
-	RootCmd.PersistentFlags().StringVarP(&projectBase, "projectbase", "b", "", "github.com/miclip/mybrewgo")
+	RootCmd.PersistentFlags().StringVarP(&projectBase, "projectbase", "b", "", "./")
 	RootCmd.PersistentFlags().StringP("author", "a", "Michael Lipscombe", "Author name for copyright attribution")
 	RootCmd.PersistentFlags().StringVarP(&userLicense, "license", "l", "", "MIT License")
 	RootCmd.PersistentFlags().Bool("viper", true, "Use Viper for configuration")
@@ -57,9 +57,9 @@ func initConfig() {
 			os.Exit(1)
 		}
 
-		// Search config in home directory with name ".mybrewgo" (without extension).
+		// Search config in home directory with name ".mybrew" (without extension).
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".mybrewgo")
+		viper.SetConfigName(".mybrew")
 	}
 
 	// if err := viper.ReadInConfig(); err != nil {

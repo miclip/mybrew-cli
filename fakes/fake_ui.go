@@ -3,7 +3,7 @@ package fakes
 import (
 	"io"
 
-	"github.com/miclip/mybrewgo/ui"
+	"github.com/miclip/mybrew/ui"
 )
 
 // NewFakeUI returns a fake UI
