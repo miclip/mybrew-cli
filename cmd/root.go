@@ -14,8 +14,8 @@ var cfgFile, projectBase, userLicense string
 // RootCmd ...
 var RootCmd = &cobra.Command{
 	Use:   "mybrew",
-	Short: "MyBrewGo is a very fast command line interface for managing homebrew recipes.",
-	Long: `MyBrewGo is a very fast command line interface for managing homebrew recipes. MyBrewGo
+	Short: "mybrew-cli is a fast command line interface for managing homebrew recipes.",
+	Long: `mybrew-cli is a fast command line interface for managing homebrew recipes. mybrew-cli
 	supports recipes in either YAML, JSON, XML and can be added directly via the cli.
 
 	Recipes are stored local to the executable in the human readable YAML format. This enables
