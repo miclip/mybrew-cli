@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/miclip/mybrewgo.svg?branch=master)](https://travis-ci.org/miclip/mybrewgo)
 [![codecov](https://codecov.io/gh/miclip/mybrewgo/branch/master/graph/badge.svg)](https://codecov.io/gh/miclip/mybrewgo)
 
-# MyBrewGo
+# mybrew-cli
 
-MyBrewGo is a very fast command line interface for managing homebrew recipes. MyBrewGo
+mybrew-cli is a very fast command line interface for managing homebrew recipes. mybrew-cli
 supports recipes in either YAML, JSON, XML and they can be added directly via the cli.
 
 Recipes are stored local to the executable in the human readable YAML format. This enables
