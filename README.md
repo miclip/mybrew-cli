@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/miclip/mybrew.svg?branch=master)](https://travis-ci.org/miclip/mybrew)
-[![codecov](https://codecov.io/gh/miclip/mybrew/branch/master/graph/badge.svg)](https://codecov.io/gh/miclip/mybrew)
+[![Build Status](https://travis-ci.org/miclip/mybrew.svg?branch=master)](https://travis-ci.org/miclip/mybrew-cli)
+[![codecov](https://codecov.io/gh/miclip/mybrew-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/miclip/mybrew-cli)
 
 # mybrew-cli
 
