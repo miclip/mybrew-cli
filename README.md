@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/miclip/mybrewgo.svg?branch=master)](https://travis-ci.org/miclip/mybrewgo)
-[![codecov](https://codecov.io/gh/miclip/mybrewgo/branch/master/graph/badge.svg)](https://codecov.io/gh/miclip/mybrewgo)
+[![Build Status](https://travis-ci.org/miclip/mybrew.svg?branch=master)](https://travis-ci.org/miclip/mybrew)
+[![codecov](https://codecov.io/gh/miclip/mybrew/branch/master/graph/badge.svg)](https://codecov.io/gh/miclip/mybrew)
 
 # mybrew-cli
 
@@ -14,8 +14,8 @@ the user to choose a source code repository like github.com to store and backup 
 ```sh
 mkdir -p $(go env GOPATH)/src/github.com/miclip
 cd $(go env GOPATH)/src/github.com/miclip
-git clone git@github.com:miclip/mybrewgo
-cd mybrewgo
+git clone git@github.com:miclip/mybrew
+cd mybrew
 ```
 At this point you should be able to run the unit tests:
 
@@ -28,11 +28,11 @@ go test $(go list ./... | grep -v /vendor/)
 Add a recipe and display basic recipe calculations:
 
 ```sh
-mybrewgo recipes add --path ./test_data/accidental-ipa.yml
+mybrew recipes add --path ./test_data/accidental-ipa.yml
 
 Recipe Add...
 
-Reading recipe file .../mybrewgo/test_data/accidental-ipa.yml
+Reading recipe file .../mybrew/test_data/accidental-ipa.yml
 
 Recipe: Accidental IPA
 Style: American IPA
@@ -54,12 +54,12 @@ Yeasts:
 Safale American Attenuation: 77
 ```
 
-Note: Recipe will be added to a local YAML file name `mybrewgo_recipes.yml`
+Note: Recipe will be added to a local YAML file name `mybrew_recipes.yml`
 
 Add a recipe interactively via the user interface:
 
 ```sh
-mybrewgo recipes add
+mybrew recipes add
 
 Adding Recipe...
 Recipe Name:
@@ -72,7 +72,7 @@ the recipe details and calculated values.
 List all the recipes in the local repository
 
 ```sh
-mybrewgo recipes
+mybrew recipes
 Recipes:
 0. Accidental IPA\0	1. Czech Pilsner\0	2. Dry Irish Stout\0
 
@@ -102,7 +102,7 @@ Safale American Attenuation: 77
 ##### By Name and Version:
 
 ```sh
-mybrewgo recipe -n 'Accidental IPA' -v 1
+mybrew recipe -n 'Accidental IPA' -v 1
 ...
 Recipe: Accidental IPA Version: 1
 Style: American IPA
@@ -127,7 +127,7 @@ Safale American Attenuation: 77
 ##### Search By Name:
 
 ```sh
-mybrewgo recipes search 'c'
+mybrew recipes search 'c'
 
 Search results for 'c':
 0. Accidental IPA
